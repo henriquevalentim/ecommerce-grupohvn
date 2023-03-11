@@ -3,18 +3,18 @@ import { ContainerImage } from './styles'
 
 export default function Carousel() {
   return (
-    <div style={{ paddingTop: 10 }}>
+    <div>
       <Slider showThumbs={false}>
         <ContainerImage>
-          <img src='https://via.placeholder.com/600x200' alt='Carousel' />
+          <img src='https://via.placeholder.com/400x200' alt='Carousel' />
           <p className='legend'>Legend 1</p>
         </ContainerImage>
         <ContainerImage>
-          <img src='https://via.placeholder.com/600x200' alt='Carousel' />
+          <img src='https://via.placeholder.com/400x200' alt='Carousel' />
           <p className='legend'>Legend 1</p>
         </ContainerImage>
         <ContainerImage>
-          <img src='https://via.placeholder.com/600x200' alt='Carousel' />
+          <img src='https://via.placeholder.com/400x200' alt='Carousel' />
           <p className='legend'>Legend 1</p>
         </ContainerImage>
       </Slider>
