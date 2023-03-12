@@ -7,8 +7,11 @@ import { LocalizationProvider } from '@mui/x-date-pickers'
 import jwt_decode from 'jwt-decode'
 import api from '../../utils/api'
 import TextError from '../../components/TextError'
+import { useNavigate } from 'react-router-dom'
 
 export default function SignUp() {
+  const navigate = useNavigate()
+
   const [name, setName] = React.useState('')
   const [email, setEmail] = React.useState('')
   const [cpf, setCpf] = React.useState('')
@@ -37,6 +40,8 @@ export default function SignUp() {
       localStorage.setItem('email', decode.email)
       localStorage.setItem('name', decode.name)
       localStorage.setItem('id', decode.id)
+
+      navigate('/')
     } catch (error) {
       console.log('error', error.response.data.message)
       setError(error.response.data.message)

@@ -9,11 +9,14 @@ import {
   Link
 } from '@mui/material'
 import jwt_decode from 'jwt-decode'
+import { useNavigate } from 'react-router-dom'
+
 import { BLUE } from '../../utils/constants'
 import api from '../../utils/api'
 import TextError from '../../components/TextError'
 
 export default function Login() {
+  const navigate = useNavigate()
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [loading, setLoading] = React.useState(false)
@@ -34,7 +37,7 @@ export default function Login() {
       localStorage.setItem('email', decode.email)
       localStorage.setItem('name', decode.name)
       localStorage.setItem('id', decode.id)
-      setLoading(false)
+      navigate('/')
     } catch (error) {
       console.log('error', error.response.data.message)
       setError(error.response.data.message)
