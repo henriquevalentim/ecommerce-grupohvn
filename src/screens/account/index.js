@@ -3,6 +3,7 @@ import Header from '../../components/Header'
 import PropTypes from 'prop-types'
 import { Typography, Tab, Tabs, Box } from '@mui/material'
 import UpdateUserData from './tabs/updateUserData'
+import Address from './tabs/address'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
@@ -65,7 +66,7 @@ export default function Account() {
           Lista de pedidos
         </TabPanel>
         <TabPanel value={value} index={2}>
-          Endereço
+          <Address />
         </TabPanel>
       </Box>
     </>

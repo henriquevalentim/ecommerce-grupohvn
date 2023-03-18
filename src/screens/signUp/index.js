@@ -1,5 +1,16 @@
 import React from 'react'
-import { Grid, Paper, TextField, Button, Typography, Link } from '@mui/material'
+import {
+  Grid,
+  Paper,
+  TextField,
+  Button,
+  Typography,
+  Link,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl
+} from '@mui/material'
 import { BLUE } from '../../utils/constants'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
@@ -14,6 +25,7 @@ export default function SignUp() {
 
   const [name, setName] = React.useState('')
   const [email, setEmail] = React.useState('')
+  const [genre, setGenre] = React.useState('')
   const [cpf, setCpf] = React.useState('')
   const [birthDate, setBirthDate] = React.useState('')
   const [password, setPassword] = React.useState('')
@@ -30,7 +42,8 @@ export default function SignUp() {
         cpf,
         birthDate,
         password,
-        confirmPassword
+        confirmPassword,
+        genre
       }
 
       const response = await api.post('/user/register', body)
@@ -90,6 +103,20 @@ export default function SignUp() {
           fullWidth
           required
         />
+        <FormControl fullWidth>
+          <InputLabel id='demo-simple-select-label'>Genero</InputLabel>
+          <Select
+            labelId='demo-simple-select-label'
+            id='demo-simple-select'
+            value={genre}
+            label='Genero'
+            onChange={(e) => setGenre(e.target.value)}
+          >
+            <MenuItem value={''}>Não informar</MenuItem>
+            <MenuItem value={'M'}>Masculino</MenuItem>
+            <MenuItem value={'F'}>Feminino</MenuItem>
+          </Select>
+        </FormControl>
         <TextField
           style={{ margin: '8px 0' }}
           label='CPF'
@@ -106,6 +133,7 @@ export default function SignUp() {
             onChange={(e) => setBirthDate(e)}
           />
         </LocalizationProvider>
+
         <TextField
           style={{ margin: '8px 0' }}
           label='Senha'

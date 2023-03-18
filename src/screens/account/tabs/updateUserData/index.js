@@ -1,6 +1,14 @@
 import React, { useEffect } from 'react'
 
-import { Grid, TextField, Button } from '@mui/material'
+import {
+  Grid,
+  TextField,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
+} from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers'
@@ -10,6 +18,7 @@ import api from '../../../../utils/api'
 export default function UpdateUserData() {
   const [name, setName] = React.useState('')
   const [email, setEmail] = React.useState('')
+  const [genre, setGenre] = React.useState('')
   const [cpf, setCpf] = React.useState('')
   const [birthDate, setBirthDate] = React.useState(null)
 
@@ -19,6 +28,7 @@ export default function UpdateUserData() {
       setName(response.data.name)
       setEmail(response.data.email)
       setCpf(response.data.cpf)
+      setGenre(response.data.genre)
       setBirthDate(new Date(response.data.birthDate))
     }
     fetchData()
@@ -49,6 +59,20 @@ export default function UpdateUserData() {
         fullWidth
         required
       />
+      <FormControl fullWidth>
+        <InputLabel id='demo-simple-select-label'>Genero</InputLabel>
+        <Select
+          labelId='demo-simple-select-label'
+          id='demo-simple-select'
+          value={genre}
+          label='Genero'
+          onChange={(e) => setGenre(e.target.value)}
+        >
+          <MenuItem value={''}>Não informar</MenuItem>
+          <MenuItem value={'M'}>Masculino</MenuItem>
+          <MenuItem value={'F'}>Feminino</MenuItem>
+        </Select>
+      </FormControl>
       <TextField
         style={{ margin: '8px 0' }}
         label='CPF'
