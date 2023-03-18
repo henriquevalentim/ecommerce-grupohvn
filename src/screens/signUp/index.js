@@ -33,7 +33,7 @@ export default function SignUp() {
         confirmPassword
       }
 
-      const response = await api.post('/user', body)
+      const response = await api.post('/user/register', body)
 
       const decode = jwt_decode(response.data.token)
       localStorage.setItem('token', response.data.token)

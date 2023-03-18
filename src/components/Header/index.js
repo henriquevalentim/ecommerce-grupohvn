@@ -8,9 +8,19 @@ import {
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import AccountMenu from '../AccountMenu'
 
 export default function Header() {
   const navigate = useNavigate()
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      setIsAuthenticated(true)
+    }
+  }, [])
 
   const redirectLogin = () => {
     navigate('/login')
@@ -32,9 +42,13 @@ export default function Header() {
           <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
             Grupo HVN
           </Typography>
-          <Button color='inherit' onClick={redirectLogin}>
-            Login
-          </Button>
+          {isAuthenticated ? (
+            <AccountMenu />
+          ) : (
+            <Button color='inherit' onClick={redirectLogin}>
+              Login
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </Box>

@@ -29,7 +29,7 @@ export default function Login() {
         email,
         password
       }
-      console.log('body', body)
+
       const response = await api.post('/user/login', body)
 
       const decode = jwt_decode(response.data.token)
