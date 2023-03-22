@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Grid, TextField, Button, Modal, Box, Typography } from '@mui/material'
-import { useAlert } from 'react-alert'
+// import { useAlert } from 'react-alert'
 import { BLUE } from '../../utils/constants'
 
 import apiCEP from '../../utils/apiCEP'
@@ -17,7 +17,7 @@ export default function ModalAddress({ handleClose, open, setAddress }) {
   const [complement, setComplement] = React.useState('')
   const [zipCode, setZipCode] = React.useState('')
   const [loading, setLoading] = React.useState(false)
-  const alert = useAlert()
+  // const alert = useAlert()
 
   const getAddressByZipCode = async (cep) => {
     setZipCode(cep)
@@ -60,7 +60,7 @@ export default function ModalAddress({ handleClose, open, setAddress }) {
       cleanFields()
       handleClose()
     } catch (error) {
-      alert.show('Erro ao cadastrar endereço')
+      // alert.show('Erro ao cadastrar endereço')
     } finally {
       setLoading(false)
     }

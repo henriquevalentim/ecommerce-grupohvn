@@ -1,9 +1,18 @@
 import React from 'react'
 import Header from '../../components/Header'
 import PropTypes from 'prop-types'
-import { Typography, Tab, Tabs, Box } from '@mui/material'
+import { Typography, Tabs, Box, Container } from '@mui/material'
 import UpdateUserData from './tabs/updateUserData'
 import Address from './tabs/address'
+import {
+  CardGiftcard,
+  Payment,
+  Person,
+  Place,
+  ShoppingBasket
+} from '@mui/icons-material'
+import { Tab } from './styles'
+import { GREY_FAINT } from '../../utils/constants'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
@@ -45,30 +54,80 @@ export default function Account() {
   }
 
   return (
-    <>
+    <div style={{ backgroundColor: GREY_FAINT }}>
       <Header />
-      <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Container
+        sx={{
+          width: '100%',
+          height: '100vh',
+          display: 'flex'
+        }}
+      >
+        <Box
+          sx={{
+            marginTop: 3,
+            width: 300,
+            height: '30%'
+          }}
+        >
           <Tabs
+            orientation='vertical'
             value={value}
             onChange={handleChange}
-            aria-label='basic tabs example'
+            TabIndicatorProps={{
+              style: {
+                display: 'none'
+              }
+            }}
           >
-            <Tab label='Cadastro' {...selectTab(0)} />
-            <Tab label='Pedidos' {...selectTab(1)} />
-            <Tab label='Endereço' {...selectTab(2)} />
+            <Tab
+              label='pedido'
+              icon={<ShoppingBasket />}
+              iconPosition='start'
+              {...selectTab(0)}
+            />
+            <Tab
+              label='cadastro'
+              icon={<Person />}
+              iconPosition='start'
+              {...selectTab(1)}
+            />
+            <Tab
+              label='endereço'
+              icon={<Place />}
+              iconPosition='start'
+              {...selectTab(2)}
+            />
+            <Tab
+              label='cartão'
+              icon={<Payment />}
+              iconPosition='start'
+              {...selectTab(3)}
+            />
+            <Tab
+              label='Cupom'
+              icon={<CardGiftcard />}
+              iconPosition='start'
+              {...selectTab(4)}
+            />
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          <UpdateUserData />
+          Lista de pedidos
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Lista de pedidos
+          <UpdateUserData />
         </TabPanel>
         <TabPanel value={value} index={2}>
           <Address />
         </TabPanel>
-      </Box>
-    </>
+        <TabPanel value={value} index={3}>
+          Cartãooooooooooooooo
+        </TabPanel>
+        <TabPanel value={value} index={4}>
+          Cupommmmm
+        </TabPanel>
+      </Container>
+    </div>
   )
 }

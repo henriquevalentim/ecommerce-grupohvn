@@ -16,29 +16,41 @@ import {
 
 import api from '../../../../utils/api'
 import ModalAddress from '../../../../components/ModalAddress'
+import Loading from '../../../../components/basicComponents/Loading'
 
 export default function Address() {
   const [open, setOpen] = React.useState(false)
   const [address, setAddress] = React.useState([])
+  const [loading, setLoading] = React.useState(false)
+
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
+  const setMainAddress = async (addressId) => {
+    setLoading(true)
+    await api.put('/address/setMainAddress', { addressId })
+    const response = await api.get('/address/user')
+    setAddress(response.data)
+    setLoading(false)
+  }
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true)
       const response = await api.get('/address/user')
-      console.log(response.data)
       setAddress(response.data)
+      setLoading(false)
     }
     fetchData()
   }, [])
 
   return (
     <>
-      <Grid container>
-        <Grid item md={10}>
+      <Loading loading={loading} />
+      <Grid container style={{ width: '100%' }}>
+        <Grid item md={8}>
           <h1>Endereços</h1>
         </Grid>
-        <Grid item md={2}>
+        <Grid item md={4}>
           <Button
             type='submit'
             color='primary'
@@ -56,16 +68,23 @@ export default function Address() {
         open={open}
         setAddress={setAddress}
       />
-      <Grid container fullWidth spacing={3}>
+      <Grid
+        container
+        spacing={2}
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap'
+        }}
+      >
         {address.map((item) => (
-          <Grid item md={3}>
+          <Grid item md={5}>
             <Card sx={{ minWidth: 350, maxWidth: 550 }}>
               <CardContent>
-                <Typography variant='h4' component='div'>
+                <Typography variant='h5' component='div'>
                   {item.name}
                 </Typography>
                 <Divider />
-                <Typography variant='h5'>
+                <Typography variant='h6'>
                   {item.street}, {item.number}
                   <br />
                   {item.neighborhood}, {item.city} - {item.uf}
@@ -79,7 +98,7 @@ export default function Address() {
                     aria-labelledby='demo-controlled-radio-buttons-group'
                     name='controlled-radio-buttons-group'
                     value={JSON.stringify(item.isMain)}
-                    // onChange={handleChange}
+                    onClick={() => setMainAddress(item._id)}
                   >
                     <FormControlLabel
                       value={'true'}

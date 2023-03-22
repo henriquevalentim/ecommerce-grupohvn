@@ -2,18 +2,18 @@ import React, { useEffect } from 'react'
 
 import {
   Grid,
-  TextField,
   Button,
   FormControl,
   InputLabel,
   Select,
   MenuItem
 } from '@mui/material'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import { LocalizationProvider } from '@mui/x-date-pickers'
 
 import api from '../../../../utils/api'
+import Loading from '../../../../components/basicComponents/Loading'
+import { toast } from 'react-toastify'
+import InputText from '../../../../components/basicComponents/InputText'
+import InputDate from '../../../../components/basicComponents/InputDate'
 
 export default function UpdateUserData() {
   const [name, setName] = React.useState('')
@@ -21,44 +21,73 @@ export default function UpdateUserData() {
   const [genre, setGenre] = React.useState('')
   const [cpf, setCpf] = React.useState('')
   const [birthDate, setBirthDate] = React.useState(null)
+  const [loading, setLoading] = React.useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true)
       const response = await api.get('/user/userData')
       setName(response.data.name)
       setEmail(response.data.email)
       setCpf(response.data.cpf)
       setGenre(response.data.genre)
       setBirthDate(new Date(response.data.birthDate))
+      setLoading(false)
     }
     fetchData()
   }, [])
 
+  const handleSubmit = async () => {
+    try {
+      setLoading(true)
+      const body = {
+        name,
+        email,
+        genre,
+        cpf,
+        birthDate
+      }
+      const response = await api.put('/user/userData', body)
+      toast(response.data.message)
+    } catch (error) {
+      console.log(error)
+      toast(error.data.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
-    <Grid container style={{ maxWidth: 500 }}>
+    <Grid
+      container
+      style={{
+        maxWidth: 700,
+        backgroundColor: '#fff',
+        padding: 50,
+        borderRadius: 10,
+        margin: '0 auto'
+      }}
+    >
+      <Loading loading={loading} />
       <Grid>
         <h2>Cadastro</h2>
       </Grid>
 
-      <TextField
+      <InputText
         label='Nome'
         placeholder='Maria da Silva'
-        variant='outlined'
-        onChange={(e) => setName(e.target.value)}
+        setValue={setName}
         value={name}
-        fullWidth
-        required
       />
-      <TextField
+
+      <InputText
         style={{ margin: '8px 0' }}
         label='E-mail'
         placeholder='maria@email.com'
-        variant='outlined'
-        onChange={(e) => setEmail(e.target.value)}
+        setValue={setEmail}
         value={email}
-        fullWidth
-        required
       />
+
       <FormControl fullWidth>
         <InputLabel id='demo-simple-select-label'>Genero</InputLabel>
         <Select
@@ -73,31 +102,26 @@ export default function UpdateUserData() {
           <MenuItem value={'F'}>Feminino</MenuItem>
         </Select>
       </FormControl>
-      <TextField
+      <InputText
         style={{ margin: '8px 0' }}
         label='CPF'
         placeholder='123.456.789-00'
-        variant='outlined'
-        onChange={(e) => setCpf(e.target.value)}
+        setValue={setCpf}
         value={cpf}
-        fullWidth
-        required
       />
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DatePicker
-          className='fullwidth'
-          label={'Data de nascimento'}
-          value={birthDate}
-          onChange={(e) => setBirthDate(e)}
-        />
-      </LocalizationProvider>
+
+      <InputDate
+        label='Data de nascimento'
+        value={birthDate}
+        setValue={setBirthDate}
+      />
 
       <Button
         type='submit'
         color='primary'
         variant='contained'
         style={{ margin: '8px 0' }}
-        // onClick={() => handleSubmit()}
+        onClick={() => handleSubmit()}
         // disabled={loading}
         fullWidth
       >

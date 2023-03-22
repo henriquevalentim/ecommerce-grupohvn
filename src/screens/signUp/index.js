@@ -12,13 +12,12 @@ import {
   FormControl
 } from '@mui/material'
 import { BLUE } from '../../utils/constants'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import { LocalizationProvider } from '@mui/x-date-pickers'
 import jwt_decode from 'jwt-decode'
 import api from '../../utils/api'
 import TextError from '../../components/TextError'
 import { useNavigate } from 'react-router-dom'
+import InputDate from '../../components/basicComponents/InputDate'
+import InputText from '../../components/basicComponents/InputText'
 
 export default function SignUp() {
   const navigate = useNavigate()
@@ -85,24 +84,20 @@ export default function SignUp() {
           <TextError message={error} />
         </Grid>
 
-        <TextField
+        <InputText
           style={{ margin: '8px 0' }}
           label='Nome'
           placeholder='Maria da Silva'
-          variant='outlined'
-          onChange={(e) => setName(e.target.value)}
-          fullWidth
-          required
+          setValue={setName}
         />
-        <TextField
+
+        <InputText
           style={{ margin: '8px 0' }}
           label='E-mail'
           placeholder='maria@email.com'
-          variant='outlined'
-          onChange={(e) => setEmail(e.target.value)}
-          fullWidth
-          required
+          setValue={setEmail}
         />
+
         <FormControl fullWidth>
           <InputLabel id='demo-simple-select-label'>Genero</InputLabel>
           <Select
@@ -117,42 +112,29 @@ export default function SignUp() {
             <MenuItem value={'F'}>Feminino</MenuItem>
           </Select>
         </FormControl>
-        <TextField
+
+        <InputText
           style={{ margin: '8px 0' }}
           label='CPF'
           placeholder='123.456.789-00'
-          variant='outlined'
-          onChange={(e) => setCpf(e.target.value)}
-          fullWidth
-          required
+          setValue={setCpf}
         />
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DatePicker
-            className='fullwidth'
-            label={'Data de nascimento'}
-            onChange={(e) => setBirthDate(e)}
-          />
-        </LocalizationProvider>
 
-        <TextField
+        <InputDate label={'Data de nascimento'} setValue={setBirthDate} />
+
+        <InputText
           style={{ margin: '8px 0' }}
           label='Senha'
           placeholder='********'
           type='password'
-          variant='outlined'
-          onChange={(e) => setPassword(e.target.value)}
-          fullWidth
-          required
+          setValue={setPassword}
         />
 
-        <TextField
+        <InputText
           label='Confirmar senha'
           placeholder='********'
           type='password'
-          variant='outlined'
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          fullWidth
-          required
+          setValue={setConfirmPassword}
         />
         <Button
           type='submit'
