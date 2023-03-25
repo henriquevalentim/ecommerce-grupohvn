@@ -1,4 +1,4 @@
-import Text from '../../components/basicComponents/Text'
+import Text from '../../../components/basicComponents/Text'
 
 export default function NotFount() {
   return (

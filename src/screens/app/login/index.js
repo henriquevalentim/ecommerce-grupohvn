@@ -11,9 +11,9 @@ import {
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
 
-import { BLUE } from '../../utils/constants'
-import api from '../../utils/api'
-import TextError from '../../components/TextError'
+import { BLUE } from '../../../utils/constants'
+import api from '../../../utils/api'
+import TextError from '../../../components/TextError'
 
 export default function Login() {
   const navigate = useNavigate()

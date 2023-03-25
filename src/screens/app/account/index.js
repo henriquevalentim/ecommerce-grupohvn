@@ -1,5 +1,5 @@
 import React from 'react'
-import Header from '../../components/Header'
+import Header from '../../../components/Header'
 import PropTypes from 'prop-types'
 import { Typography, Tabs, Box, Container } from '@mui/material'
 import UpdateUserData from './tabs/updateUserData'
@@ -12,7 +12,7 @@ import {
   ShoppingBasket
 } from '@mui/icons-material'
 import { Tab } from './styles'
-import { GREY_FAINT } from '../../utils/constants'
+import { GREY_FAINT } from '../../../utils/constants'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props

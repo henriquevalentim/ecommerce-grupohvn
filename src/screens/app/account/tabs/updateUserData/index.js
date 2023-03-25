@@ -9,11 +9,11 @@ import {
   MenuItem
 } from '@mui/material'
 
-import api from '../../../../utils/api'
-import Loading from '../../../../components/basicComponents/Loading'
+import api from '../../../../../utils/api'
+import Loading from '../../../../../components/basicComponents/Loading'
 import { toast } from 'react-toastify'
-import InputText from '../../../../components/basicComponents/InputText'
-import InputDate from '../../../../components/basicComponents/InputDate'
+import InputText from '../../../../../components/basicComponents/InputText'
+import InputDate from '../../../../../components/basicComponents/InputDate'
 
 export default function UpdateUserData() {
   const [name, setName] = React.useState('')

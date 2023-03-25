@@ -1,13 +1,18 @@
 import React from 'react'
 
 import { Grid, TextField, Button, Modal, Box, Typography } from '@mui/material'
-// import { useAlert } from 'react-alert'
 import { BLUE } from '../../utils/constants'
 
 import apiCEP from '../../utils/apiCEP'
 import api from '../../utils/api'
 
-export default function ModalAddress({ handleClose, open, setAddress }) {
+export default function ModalAddress({
+  handleClose,
+  open,
+  setAddress,
+  addressData
+}) {
+  const [idAddress, setIdAddress] = React.useState('')
   const [name, setName] = React.useState('')
   const [street, setStreet] = React.useState('')
   const [neighborhood, setNeighborhood] = React.useState('')
@@ -17,7 +22,21 @@ export default function ModalAddress({ handleClose, open, setAddress }) {
   const [complement, setComplement] = React.useState('')
   const [zipCode, setZipCode] = React.useState('')
   const [loading, setLoading] = React.useState(false)
-  // const alert = useAlert()
+
+  React.useEffect(() => {
+    cleanFields()
+    if (addressData) {
+      setName(addressData.name)
+      setStreet(addressData.street)
+      setNeighborhood(addressData.neighborhood)
+      setNumber(addressData.number)
+      setCity(addressData.city)
+      setUF(addressData.uf)
+      setComplement(addressData.complement)
+      setZipCode(addressData.zipCode)
+      setIdAddress(addressData?._id)
+    }
+  }, [addressData])
 
   const getAddressByZipCode = async (cep) => {
     setZipCode(cep)
@@ -54,13 +73,16 @@ export default function ModalAddress({ handleClose, open, setAddress }) {
         uf,
         complement
       }
-      await api.post('/address/register', body)
+      if (idAddress) {
+        await api.put(`/address/${idAddress}`, body)
+      } else {
+        await api.post('/address/register', body)
+      }
       const response = await api.get('/address/user')
       setAddress(response.data)
       cleanFields()
       handleClose()
     } catch (error) {
-      // alert.show('Erro ao cadastrar endereço')
     } finally {
       setLoading(false)
     }
@@ -89,7 +111,7 @@ export default function ModalAddress({ handleClose, open, setAddress }) {
       >
         <Box sx={style}>
           <Typography id='modal-modal-title' variant='h6' component='h2' mb={2}>
-            novo endereço
+            {addressData ? 'Editar' : 'Novo'} endereço
           </Typography>
           <Grid container justifyContent={'center'}>
             <Grid item md={8}>

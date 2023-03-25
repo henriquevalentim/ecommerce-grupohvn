@@ -2,7 +2,6 @@ import React from 'react'
 import {
   Grid,
   Paper,
-  TextField,
   Button,
   Typography,
   Link,
@@ -11,13 +10,13 @@ import {
   InputLabel,
   FormControl
 } from '@mui/material'
-import { BLUE } from '../../utils/constants'
+import { BLUE } from '../../../utils/constants'
 import jwt_decode from 'jwt-decode'
-import api from '../../utils/api'
-import TextError from '../../components/TextError'
+import api from '../../../utils/api'
+import TextError from '../../../components/TextError'
 import { useNavigate } from 'react-router-dom'
-import InputDate from '../../components/basicComponents/InputDate'
-import InputText from '../../components/basicComponents/InputText'
+import InputDate from '../../../components/basicComponents/InputDate'
+import InputText from '../../../components/basicComponents/InputText'
 
 export default function SignUp() {
   const navigate = useNavigate()

@@ -13,18 +13,38 @@ import {
   FormControl,
   RadioGroup
 } from '@mui/material'
+import { toast } from 'react-toastify'
 
-import api from '../../../../utils/api'
-import ModalAddress from '../../../../components/ModalAddress'
-import Loading from '../../../../components/basicComponents/Loading'
+import api from '../../../../../utils/api'
+import ModalAddress from '../../../../../components/ModalAddress'
+import Loading from '../../../../../components/basicComponents/Loading'
+import { Delete, Edit } from '@mui/icons-material'
 
 export default function Address() {
   const [open, setOpen] = React.useState(false)
   const [address, setAddress] = React.useState([])
+  const [addressData, setAddressData] = React.useState([])
   const [loading, setLoading] = React.useState(false)
 
   const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
+  const handleClose = () => {
+    setOpen(false)
+    setAddressData(null)
+  }
+  const handleDelete = async (idAddress) => {
+    try {
+      setLoading(true)
+      await api.delete(`/address/${idAddress}`)
+
+      const response = await api.get('/address/user')
+      setAddress(response.data)
+    } catch (error) {
+      console.log(error)
+      toast(error.response.data.message)
+    } finally {
+      setLoading(false)
+    }
+  }
   const setMainAddress = async (addressId) => {
     setLoading(true)
     await api.put('/address/setMainAddress', { addressId })
@@ -67,6 +87,7 @@ export default function Address() {
         handleClose={handleClose}
         open={open}
         setAddress={setAddress}
+        addressData={addressData}
       />
       <Grid
         container
@@ -92,7 +113,7 @@ export default function Address() {
                   CEP: {item.zipCode}
                 </Typography>
               </CardContent>
-              <CardActions>
+              <CardActions sx={{ justifyContent: 'space-between' }}>
                 <FormControl>
                   <RadioGroup
                     aria-labelledby='demo-controlled-radio-buttons-group'
@@ -107,6 +128,19 @@ export default function Address() {
                     />
                   </RadioGroup>
                 </FormControl>
+                <div>
+                  <Edit
+                    style={{ cursor: 'pointer', marginRight: 20 }}
+                    onClick={() => {
+                      setAddressData(item)
+                      handleOpen(true)
+                    }}
+                  />
+                  <Delete
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleDelete(item._id)}
+                  />
+                </div>
               </CardActions>
             </Card>
           </Grid>

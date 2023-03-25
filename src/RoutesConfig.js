@@ -1,12 +1,13 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
-import Login from './screens/login'
-import SignUp from './screens/signUp'
-import Home from './screens/home'
-import NotFound from './screens/notFound'
-import Logout from './screens/logout'
-import Account from './screens/account'
+import Login from './screens/app/login'
+import SignUp from './screens/app/signUp'
+import Home from './screens/app/home'
+import NotFound from './screens/app/notFound'
+import Logout from './screens/app/logout'
+import Account from './screens/app/account'
+import HomeAdmin from './screens/admin/home'
 
 export default function RoutesConfig() {
   return (
@@ -18,6 +19,9 @@ export default function RoutesConfig() {
         <Route exact path='/logout' element={<Logout />} />
 
         <Route exact path='/profile' element={<Account />} />
+        <Route exact path='/admin/' element={<HomeAdmin />} />
+        <Route exact path='/admin/home' element={<HomeAdmin />} />
+
         <Route path='*' element={<NotFound />} />
       </Routes>
     </Router>

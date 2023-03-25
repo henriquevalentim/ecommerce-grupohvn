@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { ProSidebarProvider } from 'react-pro-sidebar'
 import './index.css'
 
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
@@ -9,8 +10,8 @@ import { ToastContainer } from 'react-toastify'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
-  <>
+  <ProSidebarProvider>
     <RoutesConfig />
     <ToastContainer />
-  </>
+  </ProSidebarProvider>
 )
