@@ -8,6 +8,7 @@ import NotFound from './screens/app/notFound'
 import Logout from './screens/app/logout'
 import Account from './screens/app/account'
 import HomeAdmin from './screens/admin/home'
+import ManagerUser from './screens/admin/managerUser'
 
 export default function RoutesConfig() {
   return (
@@ -21,6 +22,7 @@ export default function RoutesConfig() {
         <Route exact path='/profile' element={<Account />} />
         <Route exact path='/admin/' element={<HomeAdmin />} />
         <Route exact path='/admin/home' element={<HomeAdmin />} />
+        <Route exact path='/admin/user' element={<ManagerUser />} />
 
         <Route path='*' element={<NotFound />} />
       </Routes>
