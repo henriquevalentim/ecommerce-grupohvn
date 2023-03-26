@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Delete, Upgrade } from '@mui/icons-material'
+import { Delete } from '@mui/icons-material'
 import {
+  Button,
   Paper,
   Table,
   TableBody,
@@ -12,54 +13,40 @@ import {
   Tooltip,
   Typography
 } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 
 import SidebarAdmin from '../../../components/SidebarAdmin'
 import api from '../../../utils/api'
 import { formatDateToStringDateBr } from '../../../utils/helperDate'
 import Loading from '../../../components/basicComponents/Loading'
 import { handleConfirmDelete } from '../../../components/basicComponents/ConfirmDelete'
-import { toast } from 'react-toastify'
 
-export default function ManagerUser() {
-  const [users, setUsers] = useState([])
+export default function ManagerProduct() {
+  const [products, setProducts] = useState([])
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true)
-      const response = await api.get('/user')
-      console.log(response.data)
-      setUsers(response.data)
+      const response = await api.get('/product')
+      setProducts(response.data)
       setLoading(false)
     }
     fetchData()
   }, [])
 
-  const handleDelete = async (idUser) => {
+  const handleDelete = async (idProduct) => {
     try {
       setLoading(true)
-      await api.delete(`/user/${idUser}`)
+      await api.delete(`/product/${idProduct}`)
 
-      const response = await api.get('/user')
-      setUsers(response.data)
+      const response = await api.get('/product')
+      setProducts(response.data)
     } catch (error) {
       console.log(error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleSetAdminInUser = async (idUser) => {
-    try {
-      setLoading(true)
-      await api.post(`/user/setAdminInUser/${idUser}`)
-
-      const response = await api.get('/user')
-      setUsers(response.data)
-    } catch (error) {
-      toast(error.response.data.message)
     } finally {
       setLoading(false)
     }
@@ -81,10 +68,22 @@ export default function ManagerUser() {
       <SidebarAdmin />
       <main>
         <div style={{ padding: '16px 24px', color: '#44596e' }}>
-          <div style={{ marginBottom: '48px' }}>
+          <div
+            style={{
+              marginBottom: '48px',
+              display: 'flex',
+              justifyContent: 'space-between'
+            }}
+          >
             <Typography variant='h4' fontWeight={600}>
-              Administrar usuários
+              Administrar produtos
             </Typography>
+            <Button
+              variant='contained'
+              onClick={() => navigate('/admin/formProduct')}
+            >
+              Cadastrar Produto
+            </Button>
           </div>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 800 }} aria-label='simple table'>
@@ -92,22 +91,22 @@ export default function ManagerUser() {
                 <TableRow>
                   <TableCell style={{ fontWeight: 'bold' }}>Nome</TableCell>
                   <TableCell align='right' style={{ fontWeight: 'bold' }}>
-                    E-mail
+                    Código
                   </TableCell>
                   <TableCell align='right' style={{ fontWeight: 'bold' }}>
-                    Data de nascimento
+                    Preço
                   </TableCell>
                   <TableCell align='right' style={{ fontWeight: 'bold' }}>
-                    CPF
+                    Quantidade
                   </TableCell>
                   <TableCell align='right' style={{ fontWeight: 'bold' }}>
-                    Genero
+                    Tipo
+                  </TableCell>
+                  <TableCell align='right' style={{ fontWeight: 'bold' }}>
+                    Ativo
                   </TableCell>
                   <TableCell align='right' style={{ fontWeight: 'bold' }}>
                     Data de registro
-                  </TableCell>
-                  <TableCell align='right' style={{ fontWeight: 'bold' }}>
-                    Admin
                   </TableCell>
                   <TableCell align='right' style={{ fontWeight: 'bold' }}>
                     Ações
@@ -115,41 +114,33 @@ export default function ManagerUser() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {users
+                {products
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((user) => (
+                  .map((product) => (
                     <TableRow
-                      key={user._id}
+                      key={product._id}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                       <TableCell component='th' scope='row'>
-                        {user.name}
+                        {product.name}
                       </TableCell>
-                      <TableCell align='right'>{user.email}</TableCell>
+                      <TableCell align='right'>{product.code}</TableCell>
+                      <TableCell align='right'>{product.price}</TableCell>
+                      <TableCell align='right'>{product.quantity}</TableCell>
+                      <TableCell align='right'>{product.type}</TableCell>
                       <TableCell align='right'>
-                        {formatDateToStringDateBr(user.birthDate)}
-                      </TableCell>
-                      <TableCell align='right'>{user.cpf}</TableCell>
-                      <TableCell align='right'>{user.genre}</TableCell>
-                      <TableCell align='right'>
-                        {formatDateToStringDateBr(user.registerDate)}
+                        {product.status ? 'SIM' : 'Não'}
                       </TableCell>
                       <TableCell align='right'>
-                        {user?.permission?.includes('ADMIN') ? 'Sim' : 'Não'}
+                        {formatDateToStringDateBr(product.registerDate)}
                       </TableCell>
                       <TableCell align='right'>
-                        <Tooltip title='Tornar administrador'>
-                          <Upgrade
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => handleSetAdminInUser(user._id)}
-                          />
-                        </Tooltip>
-                        <Tooltip title='Excluir Usuário'>
+                        <Tooltip title='Excluir Produto'>
                           <Delete
                             style={{ cursor: 'pointer' }}
                             onClick={() =>
                               handleConfirmDelete({
-                                callback: () => handleDelete(user._id)
+                                callback: () => handleDelete(product._id)
                               })
                             }
                           />
@@ -163,7 +154,7 @@ export default function ManagerUser() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25, 100]}
             component='div'
-            count={users.length}
+            count={products.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

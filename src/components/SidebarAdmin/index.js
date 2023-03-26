@@ -14,6 +14,7 @@ import {
   BarChart,
   CalendarMonth,
   Diamond,
+  Inventory,
   Person,
   RoomService,
   ShoppingCart
@@ -170,12 +171,19 @@ export default function SidebarAdmin() {
                 <MenuItem> Line charts</MenuItem>
                 <MenuItem> Bar charts</MenuItem>
               </SubMenu>
-              <MenuItem icon={<Person />} component={<Link to='/admin/user' />}>
+              <MenuItem
+                icon={<Person />}
+                component={<Link to='/admin/managerUser' />}
+              >
                 Usuários
               </MenuItem>
-              <SubMenu label='Theme' icon={<Diamond />}>
-                <MenuItem> Dark</MenuItem>
-                <MenuItem> Light</MenuItem>
+              <SubMenu label='Produtos' icon={<Inventory />}>
+                <MenuItem component={<Link to='/admin/manageProduct' />}>
+                  Listar Produtos
+                </MenuItem>
+                <MenuItem component={<Link to='/admin/formProduct' />}>
+                  Cadastrar Produto
+                </MenuItem>
               </SubMenu>
               <SubMenu label='Components' icon={<Diamond />}>
                 <MenuItem> Grid</MenuItem>
