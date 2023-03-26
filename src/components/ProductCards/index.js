@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import api from '../../utils/api'
 import ProductCard from '../ProductCard'
 
 export default function ProductCards() {
@@ -68,6 +69,15 @@ export default function ProductCards() {
     }
   ])
 
+  useEffect(() => {
+    async function getProducts() {
+      const response = await api.get('/product')
+      console.log(response.data)
+      setProducts(response.data)
+    }
+    getProducts()
+  }, [])
+
   return (
     <>
       <div
@@ -79,10 +89,11 @@ export default function ProductCards() {
       >
         {products.map((product) => (
           <ProductCard
+            key={product._id}
             name={product.name}
-            description={product.description}
+            // description={product.description}
             price={product.price}
-            image_url={product.imageUrl}
+            urlImage={product.urlImage}
           />
         ))}
       </div>

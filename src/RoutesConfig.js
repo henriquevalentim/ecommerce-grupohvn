@@ -17,6 +17,7 @@ export default function RoutesConfig() {
     <Router>
       <Routes>
         <Route exact path='/' element={<Home />} />
+        <Route exact path='/home' element={<Home />} />
         <Route exact path='/login' element={<Login />} />
         <Route exact path='/cadastrar' element={<SignUp />} />
         <Route exact path='/logout' element={<Logout />} />

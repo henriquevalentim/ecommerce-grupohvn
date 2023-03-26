@@ -7,17 +7,23 @@ import {
   Typography
 } from '@mui/material'
 
-export default function ProductCard({ name, description, price, image_url }) {
+export default function ProductCard({
+  name,
+  description,
+  price,
+  urlImage,
+  key
+}) {
   return (
-    <Card sx={{ width: 400, margin: 2 }}>
-      <CardMedia component='img' height='300' image={image_url} alt={name} />
+    <Card key={key} sx={{ width: 400, margin: 2 }}>
+      <CardMedia component='img' height='300' image={urlImage} alt={name} />
       <CardContent>
         <Typography gutterBottom variant='h5' component='div'>
           {name}
         </Typography>
-        <Typography variant='body2' color='text.secondary'>
+        {/* <Typography variant='body2' color='text.secondary'>
           {description}
-        </Typography>
+        </Typography> */}
       </CardContent>
       <CardActions>
         <Button color='primary' variant='contained'>
