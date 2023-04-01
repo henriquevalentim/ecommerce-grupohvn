@@ -17,7 +17,7 @@ import Loading from '../../../components/basicComponents/Loading'
 
 import InputText from '../../../components/basicComponents/InputText'
 
-export default function ManagerProduct() {
+export default function FormProduct() {
   const [name, setName] = useState('')
   const [code, setCode] = useState('')
   const [price, setPrice] = useState('')
@@ -143,6 +143,46 @@ export default function ManagerProduct() {
                 onClick={() => navigate('/admin/manageProduct')}
               >
                 Voltar
+              </Button>
+            </Grid>
+
+            <Grid item xs={12} sx={{ mt: 5 }}>
+              <Typography variant='h5' fontWeight={600}>
+                Informações tecnicas
+              </Typography>
+            </Grid>
+            <Grid item xs={5}>
+              <FormControl fullWidth>
+                <InputLabel id='demo-simple-select-label'>
+                  Nome caracteristica *
+                </InputLabel>
+                <Select
+                  labelId='demo-simple-select-label'
+                  id='demo-simple-select'
+                  // value={age}
+                  label='Informações tecnicas'
+                  // onChange={handleChange}
+                >
+                  <MenuItem value={'Marca'}>Marca</MenuItem>
+                  <MenuItem value={'Fabricante'}>Fabricante</MenuItem>
+                  <MenuItem value={'Tipo de Chip'}>Tipo de Chip</MenuItem>
+                  <MenuItem value={'Sistema Operacional'}>
+                    Sistema Operacional
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={4}>
+              <InputText
+                label='Valor caracteristica'
+                placeholder='grande'
+                // setValue={setUrlImage}
+                // value={urlImage}
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <Button variant='contained' sx={{ height: 55 }}>
+                Adicionar
               </Button>
             </Grid>
           </Grid>

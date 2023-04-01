@@ -72,7 +72,6 @@ export default function ProductCards() {
   useEffect(() => {
     async function getProducts() {
       const response = await api.get('/product')
-      console.log(response.data)
       setProducts(response.data)
     }
     getProducts()

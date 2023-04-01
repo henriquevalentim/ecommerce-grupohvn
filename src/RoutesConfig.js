@@ -10,7 +10,9 @@ import Account from './screens/app/account'
 import HomeAdmin from './screens/admin/home'
 import ManagerUser from './screens/admin/managerUser'
 import ManagerProduct from './screens/admin/managerProduct'
-import Product from './screens/admin/product'
+import ManageSetting from './screens/admin/manageSetting'
+import FormProduct from './screens/admin/formProduct'
+import FormSetting from './screens/admin/formSetting'
 
 export default function RoutesConfig() {
   return (
@@ -27,7 +29,9 @@ export default function RoutesConfig() {
         <Route exact path='/admin/home' element={<HomeAdmin />} />
         <Route exact path='/admin/managerUser' element={<ManagerUser />} />
         <Route exact path='/admin/manageProduct' element={<ManagerProduct />} />
-        <Route exact path='/admin/formProduct' element={<Product />} />
+        <Route exact path='/admin/manageSetting' element={<ManageSetting />} />
+        <Route exact path='/admin/formProduct' element={<FormProduct />} />
+        <Route exact path='/admin/formSetting' element={<FormSetting />} />
 
         <Route path='*' element={<NotFound />} />
       </Routes>

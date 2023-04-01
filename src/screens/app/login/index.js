@@ -31,12 +31,14 @@ export default function Login() {
       }
 
       const response = await api.post('/user/login', body)
-
       const decode = jwt_decode(response.data.token)
+      const isAdmin = decode?.permission?.includes('ADMIN')
+
       localStorage.setItem('token', response.data.token)
       localStorage.setItem('email', decode.email)
       localStorage.setItem('name', decode.name)
       localStorage.setItem('id', decode.id)
+      localStorage.setItem('isAdmin', isAdmin)
       navigate('/')
     } catch (error) {
       console.log('error', error.response.data.message)

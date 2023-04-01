@@ -13,10 +13,10 @@ import { Badge, Typography } from '@mui/material'
 import {
   BarChart,
   CalendarMonth,
-  Diamond,
   Inventory,
   Person,
   RoomService,
+  Settings,
   ShoppingCart
 } from '@mui/icons-material'
 import { SidebarHeader } from '../SidebarHeader'
@@ -185,17 +185,13 @@ export default function SidebarAdmin() {
                   Cadastrar Produto
                 </MenuItem>
               </SubMenu>
-              <SubMenu label='Components' icon={<Diamond />}>
-                <MenuItem> Grid</MenuItem>
-                <MenuItem> Layout</MenuItem>
-                <SubMenu label='Forms'>
-                  <MenuItem> Input</MenuItem>
-                  <MenuItem> Select</MenuItem>
-                  <SubMenu label='More'>
-                    <MenuItem> CheckBox</MenuItem>
-                    <MenuItem> Radio</MenuItem>
-                  </SubMenu>
-                </SubMenu>
+              <SubMenu label='Configurações' icon={<Settings />}>
+                <MenuItem component={<Link to='/admin/manageSetting' />}>
+                  Listar Configurações
+                </MenuItem>
+                <MenuItem component={<Link to='/admin/formSetting' />}>
+                  Cadastrar Configuração
+                </MenuItem>
               </SubMenu>
               <SubMenu label='E-commerce' icon={<ShoppingCart />}>
                 <MenuItem> Product</MenuItem>

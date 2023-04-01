@@ -54,7 +54,6 @@ export default function ManagerProduct() {
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
-    console.log(newPage)
   }
 
   const handleChangeRowsPerPage = (event) => {

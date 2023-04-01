@@ -8,25 +8,30 @@ import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
 import PersonAdd from '@mui/icons-material/PersonAdd'
 import Settings from '@mui/icons-material/Settings'
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
 import Logout from '@mui/icons-material/Logout'
 import { useNavigate } from 'react-router-dom'
 import { Divider } from '@mui/material'
+import { getFirstLetterOfName } from '../../utils/functions'
 
 export default function AccountMenu() {
   const navigate = useNavigate()
 
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [name, setName] = React.useState('')
+  const [isAdmin, setIsAdmin] = React.useState(false)
   const open = Boolean(anchorEl)
 
   React.useEffect(() => {
     const nameUser = localStorage.getItem('name')
+    setIsAdmin(localStorage.getItem('isAdmin'))
     if (nameUser.length > 10) {
       setName(nameUser.substring(0, 10) + '...')
     } else {
       setName(nameUser)
     }
   }, [])
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)
   }
@@ -37,6 +42,11 @@ export default function AccountMenu() {
   const goToProfile = () => {
     handleClose()
     navigate('/profile')
+  }
+
+  const goToAdmin = () => {
+    handleClose()
+    navigate('/admin')
   }
 
   const logoutUser = () => {
@@ -56,7 +66,9 @@ export default function AccountMenu() {
             aria-haspopup='true'
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            <Avatar sx={{ width: 32, height: 32 }}>
+              {getFirstLetterOfName(name)}
+            </Avatar>
           </IconButton>
         </Tooltip>
       </Box>
@@ -99,6 +111,14 @@ export default function AccountMenu() {
           <Avatar /> {name}
         </MenuItem>
         <Divider />
+        {isAdmin && (
+          <MenuItem onClick={goToAdmin}>
+            <ListItemIcon>
+              <AdminPanelSettingsIcon fontSize='small' />
+            </ListItemIcon>
+            Admin
+          </MenuItem>
+        )}
         <MenuItem onClick={goToProfile}>
           <ListItemIcon>
             <Settings fontSize='small' />
