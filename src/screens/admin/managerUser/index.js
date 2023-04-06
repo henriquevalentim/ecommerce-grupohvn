@@ -77,7 +77,13 @@ export default function ManagerUser() {
     <div style={{ display: 'flex' }}>
       <Loading loading={loading} />
       <SidebarAdmin />
-      <main>
+      <main
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center'
+        }}
+      >
         <div style={{ padding: '16px 24px', color: '#44596e' }}>
           <div style={{ marginBottom: '48px' }}>
             <Typography variant='h4' fontWeight={600}>

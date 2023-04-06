@@ -6,16 +6,12 @@ import {
   CardMedia,
   Typography
 } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 
-export default function ProductCard({
-  name,
-  description,
-  price,
-  urlImage,
-  key
-}) {
+export default function ProductCard({ id, name, price, code, urlImage }) {
+  const navigate = useNavigate()
   return (
-    <Card key={key} sx={{ width: 400, margin: 2 }}>
+    <Card key={id} sx={{ width: 400, margin: 2 }}>
       <CardMedia component='img' height='300' image={urlImage} alt={name} />
       <CardContent>
         <Typography gutterBottom variant='h5' component='div'>
@@ -26,7 +22,11 @@ export default function ProductCard({
         </Typography> */}
       </CardContent>
       <CardActions>
-        <Button color='primary' variant='contained'>
+        <Button
+          color='primary'
+          variant='contained'
+          onClick={() => navigate(`/product/${code}`)}
+        >
           Comprar
         </Button>
       </CardActions>

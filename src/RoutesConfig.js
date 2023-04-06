@@ -7,6 +7,7 @@ import Home from './screens/app/home'
 import NotFound from './screens/app/notFound'
 import Logout from './screens/app/logout'
 import Account from './screens/app/account'
+import Product from './screens/app/product'
 import HomeAdmin from './screens/admin/home'
 import ManagerUser from './screens/admin/managerUser'
 import ManagerProduct from './screens/admin/managerProduct'
@@ -25,6 +26,7 @@ export default function RoutesConfig() {
         <Route exact path='/logout' element={<Logout />} />
 
         <Route exact path='/profile' element={<Account />} />
+        <Route exact path='/product/:id' element={<Product />} />
         <Route exact path='/admin/' element={<HomeAdmin />} />
         <Route exact path='/admin/home' element={<HomeAdmin />} />
         <Route exact path='/admin/managerUser' element={<ManagerUser />} />

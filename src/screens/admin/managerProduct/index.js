@@ -65,7 +65,13 @@ export default function ManagerProduct() {
     <div style={{ display: 'flex' }}>
       <Loading loading={loading} />
       <SidebarAdmin />
-      <main>
+      <main
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center'
+        }}
+      >
         <div style={{ padding: '16px 24px', color: '#44596e' }}>
           <div
             style={{
