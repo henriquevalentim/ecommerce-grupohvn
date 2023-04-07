@@ -9,12 +9,14 @@ import {
   Card,
   CardContent,
   Divider,
+  TextField,
   Typography
 } from '@mui/material'
 import { GREY_FAINT } from '../../../utils/constants'
 import { formatPrice } from '../../../utils/functions'
 import StarRating from '../../../components/StarRating'
 import InputText from '../../../components/basicComponents/InputText'
+import InputMask from '../../../components/basicComponents/InputMask'
 
 export default function Home() {
   const { id } = useParams()
@@ -29,6 +31,18 @@ export default function Home() {
     }
     getProduct()
   }, [])
+
+  useEffect(() => {
+    const getDefaultAddress = async () => {
+      const res = await api.get('/address/default')
+      if (res?.data?.zipCode) {
+        setCep(res?.data?.zipCode)
+        const response = await api.get(`/frete/${res?.data?.zipCode}`)
+        setFrete(response.data)
+      }
+    }
+    getDefaultAddress()
+  }, [cep])
 
   const calcFrere = async () => {
     try {
@@ -116,7 +130,7 @@ export default function Home() {
             </Typography>
             <Divider style={{ marginTop: 20, marginBottom: 20 }} />
             <div style={{ display: 'flex' }}>
-              <InputText
+              <InputMask
                 style={{ marginRight: 10 }}
                 label='calcular frete e prazo'
                 placeholder='08750-000'

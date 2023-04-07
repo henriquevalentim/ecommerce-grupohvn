@@ -4,7 +4,7 @@ export default function InputText({
   label,
   placeholder,
   setValue,
-  value,
+  value = '',
   type = 'text',
   style
 }) {

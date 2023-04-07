@@ -34,10 +34,10 @@ export default function FormSetting() {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const { state } = useLocation()
-  const { setting } = state
 
   useEffect(() => {
-    if (setting) {
+    if (state) {
+      const { setting = '' } = state
       setId(setting._id)
       setName(setting.name)
       setCode(setting.code)
@@ -45,7 +45,7 @@ export default function FormSetting() {
       setType(setting.type)
       setMetadatas(setting.metadatas)
     }
-  }, [setting])
+  }, [state])
 
   const handleSubmit = async () => {
     try {
