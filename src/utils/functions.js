@@ -15,3 +15,15 @@ export function formatPrice(price) {
     return price
   }
 }
+
+export function limitText(text, maxCaracter = 40) {
+  try {
+    if (text.length < maxCaracter) {
+      return text
+    }
+    return text.substr(0, maxCaracter) + '...'
+  } catch (error) {
+    console.log(error)
+    return text
+  }
+}

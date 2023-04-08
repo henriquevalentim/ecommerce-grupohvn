@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 
 import Header from '../../../components/Header'
 import api from '../../../utils/api'
@@ -9,13 +9,11 @@ import {
   Card,
   CardContent,
   Divider,
-  TextField,
   Typography
 } from '@mui/material'
 import { GREY_FAINT } from '../../../utils/constants'
 import { formatPrice } from '../../../utils/functions'
 import StarRating from '../../../components/StarRating'
-import InputText from '../../../components/basicComponents/InputText'
 import InputMask from '../../../components/basicComponents/InputMask'
 
 export default function Home() {
@@ -23,6 +21,7 @@ export default function Home() {
   const [product, setProduct] = useState()
   const [cep, setCep] = useState()
   const [frete, setFrete] = useState()
+  const navigate = useNavigate()
 
   useEffect(() => {
     async function getProduct() {
@@ -48,6 +47,22 @@ export default function Home() {
     try {
       const response = await api.get(`/frete/${cep}`)
       setFrete(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const setProductInLocalStorage = async (codeProduct) => {
+    try {
+      const productsCode = localStorage.getItem('cart')
+      if (!productsCode) {
+        localStorage.setItem('cart', JSON.stringify([codeProduct]))
+      } else {
+        const products = JSON.parse(productsCode)
+        localStorage.setItem('cart', JSON.stringify([...products, codeProduct]))
+      }
+      navigate('/cart')
+      return
     } catch (error) {
       console.log(error)
     }
@@ -153,7 +168,12 @@ export default function Home() {
               </>
             )}
             <Divider style={{ marginTop: 20, marginBottom: 20 }} />
-            <Button variant='contained'>Adicionar ao carrinho</Button>
+            <Button
+              variant='contained'
+              onClick={() => setProductInLocalStorage(product.code)}
+            >
+              Adicionar ao carrinho
+            </Button>
           </CardContent>
         </Card>
       </div>

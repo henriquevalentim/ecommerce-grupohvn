@@ -7,6 +7,8 @@ import {
   Typography
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import AccountMenu from '../AccountMenu'
@@ -24,6 +26,10 @@ export default function Header() {
 
   const redirectLogin = () => {
     navigate('/login')
+  }
+
+  const redirectCart = () => {
+    navigate('/cart')
   }
 
   return (
@@ -47,6 +53,11 @@ export default function Header() {
           >
             Grupo HVN
           </Typography>
+          <ShoppingCartIcon
+            style={{ fontSize: 30, cursor: 'pointer' }}
+            onClick={redirectCart}
+          />
+
           {isAuthenticated ? (
             <AccountMenu />
           ) : (
