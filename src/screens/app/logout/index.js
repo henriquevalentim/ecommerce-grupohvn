@@ -4,7 +4,10 @@ import { useNavigate } from 'react-router-dom'
 export default function Logout() {
   const navigate = useNavigate()
   useEffect(() => {
-    localStorage.clear()
+    localStorage.removeItem('email')
+    localStorage.removeItem('name')
+    localStorage.removeItem('isAdmin')
+    localStorage.removeItem('id')
     navigate('/')
   }, [])
 

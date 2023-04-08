@@ -15,30 +15,37 @@ import { GREY_FAINT } from '../../../utils/constants'
 import { formatPrice } from '../../../utils/functions'
 import StarRating from '../../../components/StarRating'
 import InputMask from '../../../components/basicComponents/InputMask'
+import Loading from '../../../components/basicComponents/Loading'
 
 export default function Home() {
   const { id } = useParams()
   const [product, setProduct] = useState()
   const [cep, setCep] = useState()
   const [frete, setFrete] = useState()
+  const [loadingFrete, setLoadingFrete] = useState(false)
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
     async function getProduct() {
+      setLoading(true)
       const response = await api.get(`/product/${id}`)
       setProduct(response.data)
+      setLoading(false)
     }
     getProduct()
   }, [])
 
   useEffect(() => {
     const getDefaultAddress = async () => {
+      setLoadingFrete(true)
       const res = await api.get('/address/default')
       if (res?.data?.zipCode) {
         setCep(res?.data?.zipCode)
         const response = await api.get(`/frete/${res?.data?.zipCode}`)
         setFrete(response.data)
       }
+      setLoadingFrete(false)
     }
     getDefaultAddress()
   }, [cep])
@@ -167,6 +174,9 @@ export default function Home() {
                 </Typography>
               </>
             )}
+
+            <Loading loading={loading} />
+            <Loading loading={loadingFrete} centerScreen={false} />
             <Divider style={{ marginTop: 20, marginBottom: 20 }} />
             <Button
               variant='contained'

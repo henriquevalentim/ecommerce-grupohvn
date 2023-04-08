@@ -1,7 +1,7 @@
 import ReactInputMask from 'react-input-mask'
 import { TextField } from '@mui/material'
 
-export default function InputText({
+export default function InputMask({
   mask = '99999-999',
   label,
   placeholder,
