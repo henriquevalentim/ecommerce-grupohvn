@@ -8,6 +8,7 @@ export default function Logout() {
     localStorage.removeItem('name')
     localStorage.removeItem('isAdmin')
     localStorage.removeItem('id')
+    localStorage.removeItem('token')
     navigate('/')
   }, [])
 

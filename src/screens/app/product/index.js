@@ -20,7 +20,7 @@ import Loading from '../../../components/basicComponents/Loading'
 export default function Home() {
   const { id } = useParams()
   const [product, setProduct] = useState()
-  const [cep, setCep] = useState()
+  const [cep, setCep] = useState('')
   const [frete, setFrete] = useState()
   const [loadingFrete, setLoadingFrete] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -33,19 +33,28 @@ export default function Home() {
       setProduct(response.data)
       setLoading(false)
     }
+    async function getDefaultAddress() {
+      const res = await api.get('/address/default')
+      setCep(res?.data?.zipCode)
+    }
+    getDefaultAddress()
     getProduct()
   }, [])
 
   useEffect(() => {
     const getDefaultAddress = async () => {
-      setLoadingFrete(true)
-      const res = await api.get('/address/default')
-      if (res?.data?.zipCode) {
-        setCep(res?.data?.zipCode)
-        const response = await api.get(`/frete/${res?.data?.zipCode}`)
-        setFrete(response.data)
+      try {
+        if (cep.length === 8) {
+          setLoadingFrete(true)
+
+          const response = await api.get(`/frete/${cep}`)
+          setFrete(response.data)
+        }
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setLoadingFrete(false)
       }
-      setLoadingFrete(false)
     }
     getDefaultAddress()
   }, [cep])

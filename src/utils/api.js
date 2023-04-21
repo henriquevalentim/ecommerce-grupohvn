@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'https://ecommerce-grupohvn-api.onrender.com'
+  baseURL: 'http://www.grupohvn.com:4000/'
 })
 
 api.interceptors.request.use(async (config) => {

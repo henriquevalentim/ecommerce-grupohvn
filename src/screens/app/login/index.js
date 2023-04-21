@@ -10,6 +10,7 @@ import {
 } from '@mui/material'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
+import FacebookLogin from 'react-facebook-login'
 
 import { BLUE } from '../../../utils/constants'
 import api from '../../../utils/api'
@@ -47,6 +48,34 @@ export default function Login() {
       setLoading(false)
     }
   }
+
+  const responseFacebook = async (responseCallback) => {
+    try {
+      setLoading(true)
+      const body = {
+        email: responseCallback.email,
+        name: responseCallback.name,
+        typeLogin: 'facebook'
+      }
+
+      const response = await api.post('/user/loginSocial', body)
+      const decode = jwt_decode(response.data.token)
+      const isAdmin = decode?.permission?.includes('ADMIN')
+
+      localStorage.setItem('token', response.data.token)
+      localStorage.setItem('email', decode.email)
+      localStorage.setItem('name', decode.name)
+      localStorage.setItem('id', decode.id)
+      localStorage.setItem('isAdmin', isAdmin)
+      navigate('/')
+    } catch (error) {
+      console.log('error', error.response.data.message)
+      setError(error.response.data.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <Grid
       container
@@ -98,6 +127,14 @@ export default function Login() {
         >
           {loading ? 'Carregando...' : 'Continuar'}
         </Button>
+
+        <FacebookLogin
+          appId={process.env.REACT_APP_FACEBOOK_APP_ID}
+          autoLoad={false}
+          fields='name,email'
+          callback={responseFacebook}
+        />
+
         <Typography>
           <Link href='#'>Esqueci minha senha?</Link>
         </Typography>

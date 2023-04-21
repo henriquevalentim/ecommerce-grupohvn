@@ -1,5 +1,8 @@
 export function getFirstLetterOfName(name) {
-  return name[0]
+  if (name) {
+    return name[0]
+  }
+  return name
 }
 
 export function formatPrice(price) {
@@ -18,7 +21,7 @@ export function formatPrice(price) {
 
 export function limitText(text, maxCaracter = 40) {
   try {
-    if (text.length < maxCaracter) {
+    if (text?.length < maxCaracter) {
       return text
     }
     return text.substr(0, maxCaracter) + '...'

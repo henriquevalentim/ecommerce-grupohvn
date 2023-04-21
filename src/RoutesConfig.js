@@ -15,6 +15,7 @@ import ManageSetting from './screens/admin/manageSetting'
 import FormProduct from './screens/admin/formProduct'
 import FormSetting from './screens/admin/formSetting'
 import Cart from './screens/app/cart'
+import Payment from './screens/app/payment'
 
 export default function RoutesConfig() {
   return (
@@ -29,6 +30,7 @@ export default function RoutesConfig() {
         <Route exact path='/profile' element={<Account />} />
         <Route exact path='/cart' element={<Cart />} />
         <Route exact path='/product/:id' element={<Product />} />
+        <Route exact path='/payment' element={<Payment />} />
         <Route exact path='/admin/' element={<HomeAdmin />} />
         <Route exact path='/admin/home' element={<HomeAdmin />} />
         <Route exact path='/admin/managerUser' element={<ManagerUser />} />

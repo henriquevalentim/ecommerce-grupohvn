@@ -13,19 +13,20 @@ import {
   TableRow,
   Typography
 } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
 import DeleteIcon from '@mui/icons-material/Delete'
 import Header from '../../../components/Header'
 import { GREY_FAINT } from '../../../utils/constants'
 import { limitText, formatPrice } from '../../../utils/functions'
-import InputMask from '../../../components/basicComponents/InputMask'
 import { useEffect, useState } from 'react'
 import api from '../../../utils/api'
 
 export default function Cart() {
   const [cart, setCart] = useState([])
   const [total, setTotal] = useState(0)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const getProducts = async () => {
@@ -48,21 +49,26 @@ export default function Cart() {
     getProducts()
   }, [])
 
-  // useEffect(() => {
-  //   localStorage.setItem('cart', JSON.stringify(cart))
-  //   let total = 0
-  //   cart.forEach((item) => {
-  //     total += item.price * item.quantity
-  //   })
-  //   setTotal(total)
-  // }, [cart])
-
   const calcTotalProducts = () => {
     let total = 0
     cart.forEach((item) => {
       total += item.price * item.quantity
     })
     setTotal(total)
+  }
+
+  const redirectToPayment = () => {
+    const products = cart.map((item) => {
+      return {
+        code: item.code,
+        quantity: item.quantity,
+        price: item.price,
+        name: item.name
+      }
+    })
+    localStorage.setItem('body', JSON.stringify({ products }))
+    navigate('/payment')
+    return
   }
 
   const addProduct = (product) => {
@@ -120,6 +126,13 @@ export default function Cart() {
         >
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <CardContent sx={{ flex: '1 0 auto' }}>
+              <Typography
+                component='div'
+                variant='h5'
+                style={{ marginTop: 10, marginBottom: 10 }}
+              >
+                Carrinho de compra
+              </Typography>
               <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label='simple table'>
                   <TableHead>
@@ -192,7 +205,7 @@ export default function Cart() {
           </Box>
         </Card>
         <Card
-          sx={{ maxWidth: 400, maxHeight: 500, marginTop: 10, marginLeft: 1 }}
+          sx={{ minWidth: 300, maxHeight: 500, marginTop: 10, marginLeft: 1 }}
         >
           <CardContent>
             <Typography
@@ -211,27 +224,9 @@ export default function Cart() {
               Total: {formatPrice(total)}
             </Typography>
             <Divider style={{ marginTop: 20, marginBottom: 20 }} />
-            <div style={{ display: 'flex' }}>
-              <InputMask
-                style={{ marginRight: 10 }}
-                label='calcular frete e prazo'
-                placeholder='08750-000'
-              />
-
-              <Button variant='outlined'>OK</Button>
-            </div>
-            {/* {frete && (
-            <>
-              <Typography variant='subtitle1' component='div'>
-                SEDEX: R$ {frete?.sedex?.valor} - {frete?.sedex?.prazo} dias
-              </Typography>
-              <Typography variant='subtitle1' component='div'>
-                PAC: R$ {frete?.pac?.valor} - {frete?.pac?.prazo} dias
-              </Typography>
-            </>
-          )} */}
-            <Divider style={{ marginTop: 20, marginBottom: 20 }} />
-            <Button variant='contained'>Finalizar Pedido</Button>
+            <Button variant='contained' onClick={() => redirectToPayment()}>
+              Finalizar Pedido
+            </Button>
           </CardContent>
         </Card>
       </div>

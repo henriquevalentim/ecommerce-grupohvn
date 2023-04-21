@@ -24,8 +24,8 @@ export default function AccountMenu() {
 
   React.useEffect(() => {
     const nameUser = localStorage.getItem('name')
-    setIsAdmin(localStorage.getItem('isAdmin'))
-    if (nameUser.length > 10) {
+    setIsAdmin(JSON.parse(localStorage.getItem('isAdmin')))
+    if (nameUser && nameUser.length > 10) {
       setName(nameUser.substring(0, 10) + '...')
     } else {
       setName(nameUser)
