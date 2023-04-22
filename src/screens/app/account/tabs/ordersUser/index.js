@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import {
   Card,
   CardActions,
@@ -12,112 +12,97 @@ import {
   TableHead,
   TableRow,
   Paper,
-} from '@mui/material';
-
-const orders = [
-  {
-    id: 1,
-    date: '01/04/2023',
-    amount: 200,
-    status: 'em processamento',
-    products: [
-      { id: 1, name: 'Produto 1', price: 50 },
-      { id: 2, name: 'Produto 2', price: 100 },
-      { id: 3, name: 'Produto 3', price: 50 },
-    ],
-  },
-  {
-    id: 2,
-    date: '03/04/2023',
-    amount: 350,
-    status: 'entregue',
-    products: [
-      { id: 1, name: 'Produto 1', price: 50 },
-      { id: 2, name: 'Produto 2', price: 100 },
-      { id: 3, name: 'Produto 3', price: 50 },
-      { id: 4, name: 'Produto 4', price: 150 },
-    ],
-  },
-  {
-    id: 3,
-    date: '05/04/2023',
-    amount: 120,
-    status: 'cancelado',
-    products: [{ id: 1, name: 'Produto 1', price: 50 }],
-  },
-];
+  Tooltip
+} from '@mui/material'
+import api from '../../../../../utils/api'
+import { formatDateToStringDateBr } from '../../../../../utils/helperDate'
+import { formatPrice, limitText } from '../../../../../utils/functions'
 
 const Orders = () => {
-  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState(null)
+  const [orders, setOrders] = useState([])
+  useEffect(() => {
+    const getOrders = async () => {
+      const response = await api.get(`/order/user`)
+      console.log('aaaaaaaaa', response.data)
+      setOrders(response.data)
+    }
+
+    getOrders()
+  }, [])
 
   const handleViewDetails = (order) => {
-    setSelectedOrder(order);
-  };
+    setSelectedOrder(order)
+  }
 
   const handleCloseDetails = () => {
-    setSelectedOrder(null);
-  };
+    setSelectedOrder(null)
+  }
 
-  const renderDetails = () => {
-    if (!selectedOrder) return null;
+  const renderDetails = (orderId) => {
+    if (!selectedOrder || selectedOrder?._id !== orderId) return null
 
     return (
       <TableContainer component={Paper}>
-        <Table aria-label="Products table">
+        <Table aria-label='Products table'>
           <TableHead>
             <TableRow>
               <TableCell>Nome do Produto</TableCell>
-              <TableCell align="right">Preço do Produto</TableCell>
+              <TableCell align='right'>Quantidade</TableCell>
+              <TableCell align='right'>Preço do Produto</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {selectedOrder.products.map((product) => (
               <TableRow key={product.id}>
-                <TableCell component="th" scope="row">
-                  {product.name}
-                </TableCell>
-                <TableCell align="right">R$ {product.price}</TableCell>
+                <Tooltip title={product?.name}>
+                  <TableCell component='th' scope='row'>
+                    {limitText(product.name, 40)}
+                  </TableCell>
+                </Tooltip>
+                <TableCell align='right'>{product.quantity}</TableCell>
+                <TableCell align='right'>R$ {product.price}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
         <CardActions>
-          <Button onClick={handleCloseDetails} size="small">
-            Fechar
+          <Button onClick={handleCloseDetails} size='small'>
+            esconder detalhes
           </Button>
         </CardActions>
       </TableContainer>
-    );
-  };
+    )
+  }
 
   return (
     <>
       {orders.map((order) => (
-        <Card key={order.id} style={{ maxWidth: '600px', margin: '10px auto' }}>
+        <Card key={order.id} style={{ minWidth: '800px', margin: '10px auto' }}>
           <CardContent>
-            <Typography variant="h5" component="h2">
-              Número do Pedido: {order.id}
+            <Typography variant='h5' component='h2'>
+              Data de Compra: {formatDateToStringDateBr(order.registerDate)}
             </Typography>
-            <Typography color="textSecondary" gutterBottom>
-              Data de Compra: {order.date}
+            <Typography color='textSecondary' gutterBottom>
+              Status: {order.status}
             </Typography>
-            <Typography color="textSecondary" gutterBottom>
-              Valor do Pedido: R$ {order.amount}
+            <Typography color='textSecondary' gutterBottom>
+              Valor do Pedido: {formatPrice(order.total)}
             </Typography>
-            <Typography color="textSecondary" gutterBottom>
+            <Typography color='textSecondary' gutterBottom>
               Status: {order.status}
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small" onClick={() => handleViewDetails(order)}>
-              Ver Detalhes
+            <Button size='small' onClick={() => handleViewDetails(order)}>
+              Ver detalhes da compra
             </Button>
           </CardActions>
+          {renderDetails(order._id)}
         </Card>
       ))}
-      {renderDetails()}
     </>
-  );
-};
+  )
+}
 
-export default Orders;
+export default Orders

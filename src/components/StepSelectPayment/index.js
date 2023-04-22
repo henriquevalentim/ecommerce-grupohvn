@@ -41,15 +41,15 @@ export default function StepSelectPayment({
         installments,
         card: {
           cvc,
-          number,
+          number: number.replace(' ', ''),
           name,
           expiry
         },
         paymentMethod: 'credit_card'
       }
     }
-    // const reponse = await api.post('/payment', {})
-    console.log(data)
+    const reponse = await api.post('/order/process', data)
+    console.log(reponse)
 
     handleNext()
   }
