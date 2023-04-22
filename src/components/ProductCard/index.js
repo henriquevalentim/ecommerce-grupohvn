@@ -4,32 +4,28 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  Typography
-} from '@mui/material'
-import { useNavigate } from 'react-router-dom'
+  Typography,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { formatPrice } from "../../utils/functions";
 
 export default function ProductCard({ id, name, price, code, urlImage }) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
-    <Card key={id} sx={{ width: 400, margin: 2 }}>
-      <CardMedia component='img' height='300' image={urlImage} alt={name} />
+    <Card
+      key={id}
+      sx={{ width: 400, margin: 2, cursor: "pointer" }}
+      onClick={() => navigate(`/product/${code}`)}
+    >
+      <CardMedia component="img" height="300" image={urlImage} alt={name} />
       <CardContent>
-        <Typography gutterBottom variant='h5' component='div'>
+        <Typography gutterBottom variant="h5" component="div">
           {name}
         </Typography>
-        {/* <Typography variant='body2' color='text.secondary'>
-          {description}
-        </Typography> */}
+        <Typography variant="body2" color="text.secondary">
+          {formatPrice(price)}
+        </Typography>
       </CardContent>
-      <CardActions>
-        <Button
-          color='primary'
-          variant='contained'
-          onClick={() => navigate(`/product/${code}`)}
-        >
-          Comprar
-        </Button>
-      </CardActions>
     </Card>
-  )
+  );
 }

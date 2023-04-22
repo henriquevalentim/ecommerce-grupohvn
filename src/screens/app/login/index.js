@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   Grid,
   Paper,
@@ -6,143 +6,111 @@ import {
   TextField,
   Button,
   Typography,
-  Link
-} from '@mui/material'
-import jwt_decode from 'jwt-decode'
-import { useNavigate } from 'react-router-dom'
-import FacebookLogin from 'react-facebook-login'
+  Link,
+} from "@mui/material";
+import jwt_decode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
-import { BLUE } from '../../../utils/constants'
-import api from '../../../utils/api'
-import TextError from '../../../components/TextError'
+import { BLUE } from "../../../utils/constants";
+import api from "../../../utils/api";
+import TextError from "../../../components/TextError";
+import GroupSocialLogin from "../../../components/GroupSocialLogin";
 
 export default function Login() {
-  const navigate = useNavigate()
-  const [email, setEmail] = React.useState('')
-  const [password, setPassword] = React.useState('')
-  const [loading, setLoading] = React.useState(false)
-  const [error, setError] = React.useState('')
+  const navigate = useNavigate();
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState("");
 
   async function handleSubmit() {
     try {
-      setLoading(true)
+      setLoading(true);
       const body = {
         email,
-        password
-      }
+        password,
+      };
 
-      const response = await api.post('/user/login', body)
-      const decode = jwt_decode(response.data.token)
-      const isAdmin = decode?.permission?.includes('ADMIN')
+      const response = await api.post("/user/login", body);
+      const decode = jwt_decode(response.data.token);
+      const isAdmin = decode?.permission?.includes("ADMIN");
 
-      localStorage.setItem('token', response.data.token)
-      localStorage.setItem('email', decode.email)
-      localStorage.setItem('name', decode.name)
-      localStorage.setItem('id', decode.id)
-      localStorage.setItem('isAdmin', isAdmin)
-      navigate('/')
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("email", decode.email);
+      localStorage.setItem("name", decode.name);
+      localStorage.setItem("id", decode.id);
+      localStorage.setItem("isAdmin", isAdmin);
+      navigate("/");
     } catch (error) {
-      console.log('error', error.response.data.message)
-      setError(error.response.data.message)
+      console.log("error", error.response.data.message);
+      setError(error.response.data.message);
     } finally {
-      setLoading(false)
-    }
-  }
-
-  const responseFacebook = async (responseCallback) => {
-    try {
-      setLoading(true)
-      const body = {
-        email: responseCallback.email,
-        name: responseCallback.name,
-        typeLogin: 'facebook'
-      }
-
-      const response = await api.post('/user/loginSocial', body)
-      const decode = jwt_decode(response.data.token)
-      const isAdmin = decode?.permission?.includes('ADMIN')
-
-      localStorage.setItem('token', response.data.token)
-      localStorage.setItem('email', decode.email)
-      localStorage.setItem('name', decode.name)
-      localStorage.setItem('id', decode.id)
-      localStorage.setItem('isAdmin', isAdmin)
-      navigate('/')
-    } catch (error) {
-      console.log('error', error.response.data.message)
-      setError(error.response.data.message)
-    } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
   return (
     <Grid
       container
-      direction='row'
-      justifyContent='center'
-      alignItems='center'
-      style={{ backgroundColor: BLUE, height: '100vh' }}
+      direction="row"
+      justifyContent="center"
+      alignItems="center"
+      style={{ backgroundColor: BLUE, height: "100vh" }}
     >
       <Paper
         elevation={10}
         style={{
           padding: 30,
-          height: '50vh',
-          width: 280,
-          margin: '20px auto'
+          height: "60vh",
+          width: 300,
+          margin: "20px auto",
         }}
       >
-        <Grid align='center'>
+        <Grid align="center">
           <Avatar style={{ backgroundColor: BLUE }}></Avatar>
           <h2>login do cliente</h2>
           <TextError message={error} />
         </Grid>
         <TextField
-          style={{ margin: '8px 0' }}
-          label='E-mail'
-          placeholder='maria@email.com'
-          variant='outlined'
+          style={{ margin: "8px 0" }}
+          label="E-mail"
+          placeholder="maria@email.com"
+          variant="outlined"
           onChange={(e) => setEmail(e.target.value)}
           fullWidth
           required
         />
         <TextField
-          label='Senha'
-          placeholder='********'
-          type='password'
-          variant='outlined'
+          label="Senha"
+          placeholder="********"
+          type="password"
+          variant="outlined"
           onChange={(e) => setPassword(e.target.value)}
           fullWidth
           required
         />
         <Button
-          type='submit'
-          color='primary'
-          variant='contained'
-          style={{ margin: '8px 0' }}
+          type="submit"
+          color="primary"
+          variant="contained"
+          style={{ margin: "8px 0" }}
           onClick={() => handleSubmit()}
           fullWidth
           disabled={loading}
         >
-          {loading ? 'Carregando...' : 'Continuar'}
+          {loading ? "Carregando..." : "Continuar"}
         </Button>
 
-        <FacebookLogin
-          appId={process.env.REACT_APP_FACEBOOK_APP_ID}
-          autoLoad={false}
-          fields='name,email'
-          callback={responseFacebook}
-        />
+        <GroupSocialLogin />
 
         <Typography>
-          <Link href='#'>Esqueci minha senha?</Link>
+          <Link href="#">Esqueci minha senha?</Link>
         </Typography>
         <Typography>
-          {' '}
-          Não tem cadastro? <Link href='/cadastrar'>cadastre-se</Link>
+          {" "}
+          Não tem cadastro? <Link href="/cadastrar">cadastre-se</Link>
         </Typography>
       </Paper>
     </Grid>
-  )
+  );
 }
