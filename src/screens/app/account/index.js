@@ -1,25 +1,26 @@
-import React from 'react'
-import Header from '../../../components/Header'
-import PropTypes from 'prop-types'
-import { Typography, Tabs, Box, Container } from '@mui/material'
-import UpdateUserData from './tabs/updateUserData'
-import Address from './tabs/address'
+import React from 'react';
+import Header from '../../../components/Header';
+import PropTypes from 'prop-types';
+import { Typography, Tabs, Box, Container } from '@mui/material';
+import UpdateUserData from './tabs/updateUserData';
+import Address from './tabs/address';
 import {
   CardGiftcard,
   Payment,
   Person,
   Place,
-  ShoppingBasket
-} from '@mui/icons-material'
-import { Tab } from './styles'
-import { GREY_FAINT } from '../../../utils/constants'
+  ShoppingBasket,
+} from '@mui/icons-material';
+import { Tab } from './styles';
+import { GREY_FAINT } from '../../../utils/constants';
+import OrdersUser from './tabs/ordersUser';
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props
+  const { children, value, index, ...other } = props;
 
   return (
     <div
-      role='tabpanel'
+      role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
@@ -31,27 +32,27 @@ function TabPanel(props) {
         </Box>
       )}
     </div>
-  )
+  );
 }
 
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired
-}
+  value: PropTypes.number.isRequired,
+};
 
 function selectTab(index) {
   return {
     id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`
-  }
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
 }
 
 export default function Account() {
-  const [value, setValue] = React.useState(0)
+  const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
-    setValue(newValue)
-  }
+    setValue(newValue);
+  };
 
   return (
     <div style={{ backgroundColor: GREY_FAINT }}>
@@ -60,60 +61,60 @@ export default function Account() {
         sx={{
           width: '100%',
           height: '100vh',
-          display: 'flex'
+          display: 'flex',
         }}
       >
         <Box
           sx={{
             marginTop: 3,
             width: 300,
-            height: '30%'
+            height: '30%',
           }}
         >
           <Tabs
-            orientation='vertical'
+            orientation="vertical"
             value={value}
             onChange={handleChange}
             TabIndicatorProps={{
               style: {
-                display: 'none'
-              }
+                display: 'none',
+              },
             }}
           >
             <Tab
-              label='pedido'
+              label="pedido"
               icon={<ShoppingBasket />}
-              iconPosition='start'
+              iconPosition="start"
               {...selectTab(0)}
             />
             <Tab
-              label='cadastro'
+              label="cadastro"
               icon={<Person />}
-              iconPosition='start'
+              iconPosition="start"
               {...selectTab(1)}
             />
             <Tab
-              label='endereço'
+              label="endereço"
               icon={<Place />}
-              iconPosition='start'
+              iconPosition="start"
               {...selectTab(2)}
             />
             <Tab
-              label='cartão'
+              label="cartão"
               icon={<Payment />}
-              iconPosition='start'
+              iconPosition="start"
               {...selectTab(3)}
             />
             <Tab
-              label='Cupom'
+              label="Cupom"
               icon={<CardGiftcard />}
-              iconPosition='start'
+              iconPosition="start"
               {...selectTab(4)}
             />
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          Lista de pedidos
+          <OrdersUser />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <UpdateUserData />
@@ -129,5 +130,5 @@ export default function Account() {
         </TabPanel>
       </Container>
     </div>
-  )
+  );
 }

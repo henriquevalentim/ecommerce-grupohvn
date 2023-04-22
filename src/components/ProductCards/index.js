@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react'
-import api from '../../utils/api'
-import ProductCard from '../ProductCard'
+import { useEffect, useState } from 'react';
+import api from '../../utils/api';
+import ProductCard from '../ProductCard';
 
 export default function ProductCards() {
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     async function getProducts() {
-      const response = await api.get('/product')
-      setProducts(response.data)
+      const response = await api.get('/product');
+      setProducts(response.data);
     }
-    getProducts()
-  }, [])
+    getProducts();
+  }, []);
 
   return (
     <>
@@ -19,7 +19,7 @@ export default function ProductCards() {
         style={{
           display: 'flex',
           flexWrap: 'wrap',
-          justifyContent: 'center'
+          justifyContent: 'center',
         }}
       >
         {products.map((product) => (
@@ -34,5 +34,5 @@ export default function ProductCards() {
         ))}
       </div>
     </>
-  )
+  );
 }
