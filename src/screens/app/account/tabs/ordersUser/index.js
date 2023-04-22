@@ -24,7 +24,6 @@ const Orders = () => {
   useEffect(() => {
     const getOrders = async () => {
       const response = await api.get(`/order/user`)
-      console.log('aaaaaaaaa', response.data)
       setOrders(response.data)
     }
 
