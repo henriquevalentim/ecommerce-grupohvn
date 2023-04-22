@@ -8,13 +8,15 @@ export default function InputMask({
   setValue,
   value = '',
   type = 'text',
-  style
+  style,
+  onFocus = null
 }) {
   return (
     <ReactInputMask
       mask={mask}
       onChange={(e) => setValue(e.target.value)}
       value={value}
+      onFocus={onFocus}
     >
       {(inputProps) => (
         <TextField

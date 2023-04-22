@@ -13,7 +13,12 @@ import api from '../../utils/api'
 import { useState } from 'react'
 import { formatPrice } from '../../utils/functions'
 
-export default function StepSelectAddress() {
+export default function StepSelectAddress({
+  activeStep,
+  handleBack,
+  handleNext,
+  steps
+}) {
   const [mainAddress, setMainAddress] = useState()
   const [frete, setFrete] = useState()
   const [selectedFrete, setSelectedFrete] = useState(0)
@@ -237,6 +242,19 @@ export default function StepSelectAddress() {
                   />
                 </RadioGroup>
               </FormControl>
+              <div>
+                <Button
+                  color='inherit'
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  sx={{ mr: 1 }}
+                >
+                  Voltar
+                </Button>
+                <Button onClick={handleNext}>
+                  {activeStep === steps.length - 1 ? 'Pagar' : 'Próximo'}
+                </Button>
+              </div>
             </>
           )}
         </Grid>

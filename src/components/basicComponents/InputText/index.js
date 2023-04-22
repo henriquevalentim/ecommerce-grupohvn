@@ -6,7 +6,8 @@ export default function InputText({
   setValue,
   value = '',
   type = 'text',
-  style
+  style,
+  onFocus = null
 }) {
   return (
     <TextField
@@ -17,6 +18,7 @@ export default function InputText({
       value={value}
       style={style}
       variant='outlined'
+      onFocus={onFocus}
       fullWidth
       required
     />

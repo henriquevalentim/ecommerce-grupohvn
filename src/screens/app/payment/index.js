@@ -13,57 +13,22 @@ import { useEffect, useState } from 'react'
 import api from '../../../utils/api'
 import ThankYou from '../../../components/ThankYou'
 import StepSelectAddress from '../../../components/StepSelectAddress'
+import StepSelectPayment from '../../../components/StepSelectPayment'
 
-const steps = [
-  'Selecione o endereço',
-  'Informe o metodo de pagamento',
-  'Resumo'
-]
+const steps = ['Selecione o endereço', 'Informe o metodo de pagamento']
 
 export default function Payment() {
-  const [cart, setCart] = useState([])
-  const [total, setTotal] = useState(0)
   const [activeStep, setActiveStep] = useState(0)
-  const [skipped, setSkipped] = useState(new Set())
-
-  useEffect(() => {
-    const getProducts = async () => {
-      const productsLocalStorage = localStorage.getItem('cart')
-      if (productsLocalStorage) {
-        let total = 0
-        const product = JSON.parse(productsLocalStorage)
-        const response = await api.post('/product/codes', { codes: product })
-        const newCart = response.data.map((item) => {
-          item.quantity = 1
-          return item
-        })
-        newCart.forEach((item) => {
-          total += item.price * item.quantity
-        })
-        setTotal(total)
-        setCart(newCart)
-      }
-    }
-    getProducts()
-  }, [])
-
-  const isStepOptional = (step) => {
-    return step === 1
-  }
-
-  const isStepSkipped = (step) => {
-    return skipped.has(step)
-  }
 
   const handleNext = () => {
-    let newSkipped = skipped
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values())
-      newSkipped.delete(activeStep)
-    }
+    setActiveStep((prevActiveStep) => {
+      const nextPage = prevActiveStep + 1
+      if (nextPage === 2) {
+        console.log('ultioma pagina')
+      }
 
-    setActiveStep((prevActiveStep) => prevActiveStep + 1)
-    setSkipped(newSkipped)
+      return nextPage
+    })
   }
 
   const handleBack = () => {
@@ -73,11 +38,23 @@ export default function Payment() {
   const renderStep = (activeStep) => {
     switch (activeStep) {
       case 0:
-        return <StepSelectAddress />
+        return (
+          <StepSelectAddress
+            handleBack={handleBack}
+            handleNext={handleNext}
+            activeStep={activeStep}
+            steps={steps}
+          />
+        )
       case 1:
-        return <p>step 2</p>
-      case 2:
-        return <p>step 3</p>
+        return (
+          <StepSelectPayment
+            handleBack={handleBack}
+            handleNext={handleNext}
+            activeStep={activeStep}
+            steps={steps}
+          />
+        )
       default:
         return <ThankYou />
     }
@@ -114,9 +91,6 @@ export default function Payment() {
                 {steps.map((label, index) => {
                   const stepProps = {}
                   const labelProps = {}
-                  if (isStepSkipped(index)) {
-                    stepProps.completed = false
-                  }
                   return (
                     <Step key={label} {...stepProps}>
                       <StepLabel {...labelProps}>{label}</StepLabel>
@@ -125,17 +99,6 @@ export default function Payment() {
                 })}
               </Stepper>
               {renderStep(activeStep)}
-              <Button
-                color='inherit'
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                sx={{ mr: 1 }}
-              >
-                Back
-              </Button>
-              <Button onClick={handleNext}>
-                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-              </Button>
             </CardContent>
           </Box>
         </Card>
