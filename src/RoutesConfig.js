@@ -12,6 +12,7 @@ import HomeAdmin from './screens/admin/home'
 import ManagerUser from './screens/admin/managerUser'
 import ManagerProduct from './screens/admin/managerProduct'
 import ManageSetting from './screens/admin/manageSetting'
+import ManageOrder from './screens/admin/managerOrder'
 import FormProduct from './screens/admin/formProduct'
 import FormSetting from './screens/admin/formSetting'
 import Cart from './screens/app/cart'
@@ -33,9 +34,10 @@ export default function RoutesConfig() {
         <Route exact path='/payment' element={<Payment />} />
         <Route exact path='/admin/' element={<HomeAdmin />} />
         <Route exact path='/admin/home' element={<HomeAdmin />} />
-        <Route exact path='/admin/managerUser' element={<ManagerUser />} />
+        <Route exact path='/admin/manageUser' element={<ManagerUser />} />
         <Route exact path='/admin/manageProduct' element={<ManagerProduct />} />
         <Route exact path='/admin/manageSetting' element={<ManageSetting />} />
+        <Route exact path='/admin/manageOrder' element={<ManageOrder />} />
         <Route exact path='/admin/formProduct' element={<FormProduct />} />
         <Route exact path='/admin/formSetting' element={<FormSetting />} />
 

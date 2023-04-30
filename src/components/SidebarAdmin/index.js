@@ -17,7 +17,8 @@ import {
   Person,
   RoomService,
   Settings,
-  ShoppingCart
+  ShoppingCart,
+  LocalShipping
 } from '@mui/icons-material'
 import { SidebarHeader } from '../SidebarHeader'
 import { SidebarFooter } from '../SidebarFooter'
@@ -171,9 +172,17 @@ export default function SidebarAdmin() {
                 <MenuItem> Line charts</MenuItem>
                 <MenuItem> Bar charts</MenuItem>
               </SubMenu>
+
+              <MenuItem
+                icon={<LocalShipping />}
+                component={<Link to='/admin/managerOrder' />}
+              >
+                Pedidos
+              </MenuItem>
+
               <MenuItem
                 icon={<Person />}
-                component={<Link to='/admin/managerUser' />}
+                component={<Link to='/admin/manageUser' />}
               >
                 Usuários
               </MenuItem>
