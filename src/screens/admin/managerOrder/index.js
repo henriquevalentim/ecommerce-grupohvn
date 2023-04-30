@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { toast } from 'react-toastify'
 import { Edit } from '@mui/icons-material'
 import {
   Paper,
@@ -20,36 +19,42 @@ import { PAYMENT_METHODS } from '../../../utils/constants'
 import { formatDateToStringDateBr } from '../../../utils/helperDate'
 import { formatPrice } from '../../../utils/functions'
 import Loading from '../../../components/basicComponents/Loading'
+import ModalEditStatusOrder from '../../../components/ModalEditStatusOrder'
 
 export default function ManagerOrder() {
   const [orders, setOrders] = useState([])
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [loading, setLoading] = useState(false)
+  const [open, setOpen] = useState(false)
+  const [idOrder, setIdOrder] = useState('')
+  const [status, setStatus] = useState('')
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true)
       const response = await api.get('/order')
-      console.log('response.data', response.data)
       setOrders(response.data)
       setLoading(false)
     }
     fetchData()
   }, [])
 
-  const handleSetAdminInUser = async (idUser) => {
-    try {
-      setLoading(true)
-      await api.post(`/user/setAdminInUser/${idUser}`)
+  const handleOpen = (idOrder, status) => {
+    setIdOrder(idOrder)
+    setStatus(status)
+    setOpen(true)
+  }
 
-      const response = await api.get('/user')
-      setOrders(response.data)
-    } catch (error) {
-      toast(error.response.data.message)
-    } finally {
-      setLoading(false)
-    }
+  const fetchData = async () => {
+    setLoading(true)
+    const response = await api.get('/order')
+    setOrders(response.data)
+    setLoading(false)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
   }
 
   const handleChangePage = (event, newPage) => {
@@ -125,7 +130,7 @@ export default function ManagerOrder() {
                         <Tooltip title='Editar pedido'>
                           <Edit
                             style={{ cursor: 'pointer' }}
-                            onClick={() => handleSetAdminInUser(order._id)}
+                            onClick={() => handleOpen(order._id, order.status)}
                           />
                         </Tooltip>
                       </TableCell>
@@ -134,6 +139,13 @@ export default function ManagerOrder() {
               </TableBody>
             </Table>
           </TableContainer>
+          <ModalEditStatusOrder
+            handleClose={handleClose}
+            open={open}
+            idOrder={idOrder}
+            actualStatus={status}
+            fetchData={fetchData}
+          />
           <TablePagination
             rowsPerPageOptions={[5, 10, 25, 100]}
             component='div'

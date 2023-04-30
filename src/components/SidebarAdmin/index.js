@@ -175,7 +175,7 @@ export default function SidebarAdmin() {
 
               <MenuItem
                 icon={<LocalShipping />}
-                component={<Link to='/admin/managerOrder' />}
+                component={<Link to='/admin/manageOrder' />}
               >
                 Pedidos
               </MenuItem>
