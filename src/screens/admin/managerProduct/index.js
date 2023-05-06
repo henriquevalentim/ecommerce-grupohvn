@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Delete } from '@mui/icons-material'
+import { Delete, Edit } from '@mui/icons-material'
 import {
   Button,
   Paper,
@@ -140,6 +140,16 @@ export default function ManagerProduct() {
                         {formatDateToStringDateBr(product.registerDate)}
                       </TableCell>
                       <TableCell align='right'>
+                        <Tooltip title='Editar Produto'>
+                          <Edit
+                            style={{ cursor: 'pointer' }}
+                            onClick={() =>
+                              navigate(`/admin/formProduct/`, {
+                                state: { product }
+                              })
+                            }
+                          />
+                        </Tooltip>
                         <Tooltip title='Excluir Produto'>
                           <Delete
                             style={{ cursor: 'pointer' }}

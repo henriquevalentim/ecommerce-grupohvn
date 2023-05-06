@@ -12,6 +12,7 @@ import { useEffect } from 'react'
 import api from '../../utils/api'
 import { useState } from 'react'
 import { formatPrice } from '../../utils/functions'
+import ModalSelectAddress from '../ModalSelectAddress'
 
 export default function StepSelectAddress({
   activeStep,
@@ -24,6 +25,7 @@ export default function StepSelectAddress({
   const [selectedFrete, setSelectedFrete] = useState(0)
   const [totalPriceProduct, setTotalPriceProduct] = useState(0)
   const [quantityProducts, setQuantityProducts] = useState(0)
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,6 +87,11 @@ export default function StepSelectAddress({
     }
   }
 
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => {
+    setOpen(false)
+  }
+
   if (!mainAddress) return null
 
   return (
@@ -129,8 +136,15 @@ export default function StepSelectAddress({
           >
             {mainAddress?.state}
           </Typography>
-          <Button variant='text'>alterar o endereço</Button>
+          <Button variant='text' onClick={handleOpen}>
+            alterar o endereço
+          </Button>
         </Grid>
+        <ModalSelectAddress
+          handleClose={handleClose}
+          open={open}
+          setMainAddress={setMainAddress}
+        />
         <Divider orientation='vertical' flexItem />
 
         <Grid item xs style={{ marginLeft: 20 }}>

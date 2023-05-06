@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Button,
   FormControl,
@@ -9,7 +9,7 @@ import {
   MenuItem
 } from '@mui/material'
 import { toast } from 'react-toastify'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import SidebarAdmin from '../../../components/SidebarAdmin'
 import api from '../../../utils/api'
@@ -18,6 +18,7 @@ import Loading from '../../../components/basicComponents/Loading'
 import InputText from '../../../components/basicComponents/InputText'
 
 export default function FormProduct() {
+  const [id, setId] = useState('')
   const [name, setName] = useState('')
   const [code, setCode] = useState('')
   const [price, setPrice] = useState('')
@@ -27,6 +28,21 @@ export default function FormProduct() {
   const [status, setStatus] = useState(true)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const { state } = useLocation()
+
+  useEffect(() => {
+    if (state) {
+      const { product = '' } = state
+      setId(product._id)
+      setName(product.name)
+      setCode(product.code)
+      setPrice(product.price)
+      setType(product.type)
+      setQuantity(product.quantity)
+      setUrlImage(product.urlImage)
+      setStatus(product.status)
+    }
+  }, [])
 
   const handleSubmit = async () => {
     try {
@@ -41,7 +57,12 @@ export default function FormProduct() {
         status
       }
 
-      await api.post('/product/', body)
+      if (id) {
+        await api.put(`/product/${id}`, body)
+      } else {
+        await api.post('/product/', body)
+      }
+
       navigate('/admin/manageProduct')
     } catch (error) {
       toast(error.response.data.message, { type: 'error' })
@@ -135,7 +156,7 @@ export default function FormProduct() {
                 sx={{ mr: 3 }}
                 onClick={() => handleSubmit()}
               >
-                Cadastrar Produto
+                {id ? 'Editar Produto' : 'Cadastrar Produto'}
               </Button>
 
               <Button
@@ -143,46 +164,6 @@ export default function FormProduct() {
                 onClick={() => navigate('/admin/manageProduct')}
               >
                 Voltar
-              </Button>
-            </Grid>
-
-            <Grid item xs={12} sx={{ mt: 5 }}>
-              <Typography variant='h5' fontWeight={600}>
-                Informações tecnicas
-              </Typography>
-            </Grid>
-            <Grid item xs={5}>
-              <FormControl fullWidth>
-                <InputLabel id='demo-simple-select-label'>
-                  Nome caracteristica *
-                </InputLabel>
-                <Select
-                  labelId='demo-simple-select-label'
-                  id='demo-simple-select'
-                  // value={age}
-                  label='Informações tecnicas'
-                  // onChange={handleChange}
-                >
-                  <MenuItem value={'Marca'}>Marca</MenuItem>
-                  <MenuItem value={'Fabricante'}>Fabricante</MenuItem>
-                  <MenuItem value={'Tipo de Chip'}>Tipo de Chip</MenuItem>
-                  <MenuItem value={'Sistema Operacional'}>
-                    Sistema Operacional
-                  </MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={4}>
-              <InputText
-                label='Valor caracteristica'
-                placeholder='grande'
-                // setValue={setUrlImage}
-                // value={urlImage}
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <Button variant='contained' sx={{ height: 55 }}>
-                Adicionar
               </Button>
             </Grid>
           </Grid>
