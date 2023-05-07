@@ -7,7 +7,8 @@ export default function InputText({
   value = '',
   type = 'text',
   style,
-  onFocus = null
+  onFocus = null,
+  variant = 'outlined'
 }) {
   return (
     <TextField
@@ -17,10 +18,9 @@ export default function InputText({
       onChange={(e) => setValue(e.target.value)}
       value={value}
       style={style}
-      variant='outlined'
+      variant={variant}
       onFocus={onFocus}
       fullWidth
-      required
     />
   )
 }

@@ -19,12 +19,26 @@ import { formatDateToStringDateBr } from '../../../utils/helperDate'
 import Loading from '../../../components/basicComponents/Loading'
 import { handleConfirmDelete } from '../../../components/basicComponents/ConfirmDelete'
 import { toast } from 'react-toastify'
+import InputText from '../../../components/basicComponents/InputText'
 
 export default function ManagerOrder() {
   const [users, setUsers] = useState([])
+  const [usersFiltered, setUsersFiltered] = useState([])
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [loading, setLoading] = useState(false)
+  const [term, setTerm] = useState('')
+
+  useEffect(() => {
+    if (term) {
+      const filtered = users.filter((user) => {
+        return user.name.toLowerCase().includes(term.toLowerCase())
+      })
+      setUsersFiltered(filtered)
+    } else {
+      setUsersFiltered(users)
+    }
+  }, [term, users])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -90,6 +104,13 @@ export default function ManagerOrder() {
               Administrar usuários
             </Typography>
           </div>
+          <InputText
+            style={{ marginBottom: '24px' }}
+            label='Filtro'
+            placeholder='Henrique Valentim'
+            setValue={setTerm}
+            value={term}
+          />
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 800 }} aria-label='simple table'>
               <TableHead>
@@ -119,7 +140,7 @@ export default function ManagerOrder() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {users
+                {usersFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((user) => (
                     <TableRow
