@@ -12,11 +12,18 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Tooltip
+  Tooltip,
+  Link
 } from '@mui/material'
 import api from '../../../../../utils/api'
 import { formatDateToStringDateBr } from '../../../../../utils/helperDate'
 import { formatPrice, limitText } from '../../../../../utils/functions'
+
+const paymentMethods = {
+  credit_card: 'Cartão de Crédito',
+  boletobancario: 'Boleto Bancário',
+  link_payment: 'Link de pagamento'
+}
 
 const Orders = () => {
   const [selectedOrder, setSelectedOrder] = useState(null)
@@ -89,8 +96,25 @@ const Orders = () => {
               Valor do Pedido: {formatPrice(order.total)}
             </Typography>
             <Typography color='textSecondary' gutterBottom>
-              Status: {order.status}
+              Método de pagamento: {paymentMethods[order.paymentMethod]}
             </Typography>
+            {(order.paymentMethod === 'link_payment' ||
+              order.paymentMethod === 'boletobancario') && (
+              <Typography color='textSecondary' gutterBottom>
+                Link:{' '}
+                <Link
+                  href={
+                    order?.metadata?.find(
+                      (meta) =>
+                        meta.key === 'boleto_url' || meta.key === 'paymentLink'
+                    )?.value
+                  }
+                  target='_blank'
+                >
+                  clique aqui
+                </Link>
+              </Typography>
+            )}
           </CardContent>
           <CardActions>
             <Button size='small' onClick={() => handleViewDetails(order)}>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Delete, Upgrade } from '@mui/icons-material'
+import { Delete, Upgrade, Person } from '@mui/icons-material'
 import {
   Paper,
   Table,
@@ -12,6 +12,7 @@ import {
   Tooltip,
   Typography
 } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 
 import SidebarAdmin from '../../../components/SidebarAdmin'
 import api from '../../../utils/api'
@@ -28,11 +29,16 @@ export default function ManagerOrder() {
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [loading, setLoading] = useState(false)
   const [term, setTerm] = useState('')
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (term) {
       const filtered = users.filter((user) => {
-        return user.name.toLowerCase().includes(term.toLowerCase())
+        return (
+          user.name.toLowerCase().includes(term.toLowerCase()) ||
+          user.cpf.toLowerCase().includes(term.toLowerCase()) ||
+          user.email.toLowerCase().includes(term.toLowerCase())
+        )
       })
       setUsersFiltered(filtered)
     } else {
@@ -49,6 +55,16 @@ export default function ManagerOrder() {
     }
     fetchData()
   }, [])
+
+  const goToProfileUser = async (user) => {
+    try {
+      navigate('/admin/profileUser', { state: { user } })
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleDelete = async (idUser) => {
     try {
@@ -163,6 +179,12 @@ export default function ManagerOrder() {
                         {user?.permission?.includes('ADMIN') ? 'Sim' : 'Não'}
                       </TableCell>
                       <TableCell align='right'>
+                        <Tooltip title='Mostrar mais detalhes'>
+                          <Person
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => goToProfileUser(user)}
+                          />
+                        </Tooltip>
                         <Tooltip title='Tornar administrador'>
                           <Upgrade
                             style={{ cursor: 'pointer' }}
